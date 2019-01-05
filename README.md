@@ -1,3 +1,5 @@
+## Storage Management Kit
+
 The storage software kit allows you to move the content from a storage to another one. Wich this kit, you can backup your files from an on-prem file server or from a personal computer to a cloud based storage solution. All the operations are securely done without storing any non secured file. Files can be securely stored with a client-side encryption.
 
 To compile the source code, you must install .Net Core 2.0
