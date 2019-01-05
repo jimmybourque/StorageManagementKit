@@ -15,10 +15,10 @@ By example, you can use this kit for a backup strategy solution or a file server
  
 > Scenario 1
 ![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToGCS.png) 
-
-```
 Command line
-> dotnet StorageManagementKit.Copy.dll /src=local /srcpath=E:\ /dst=gcs /dstpath=my-bucket-name /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat```
+```
+> dotnet StorageManagementKit.Copy.dll /src=local /srcpath=E:\ /dst=gcs /dstpath=my-bucket-name /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat
+```
 
 > Scenario 2
 ![Flow GCS to local](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowGCSToLocal.png) 
