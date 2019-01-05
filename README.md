@@ -35,7 +35,7 @@ dotnet StorageManagementKit.Copy.dll /src=gcs /srcpath=my-bucket-name /dst=local
 ## Scenario 3
 ![Flow local to local](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToLocal.png) 
 ```
-dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=local /dstpath=E:\ /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat`
+dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=local /dstpath=E:\ /transform=secure /filekey=my_key.dat`
 ```
 
 
