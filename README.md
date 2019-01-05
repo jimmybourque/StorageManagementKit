@@ -12,9 +12,10 @@ The "Copy" utility has a flexible architecture :
 1. Determines if you want to encrypt of decrypt objects into the source
 1. You have a repository located in a folder or a cloud storage
 
+
 ![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/OrganicArchitecture.png) 
 
-By example, you can use this kit for a backup strategy solution or a file server migration tool.
+By example, you can use this kit for a backup strategy solution or a file server migration tool. Otherwise, you could use it to recover a backup from the a cloud storage. By using the command line switches, you can choose the source, the transformation and the destination as you need.
  
  
 ## Scenario 1
