@@ -2,6 +2,9 @@
 
 The storage software kit allows you to move the content from a storage to another one. Wich this kit, you can backup your files from an on-prem file server or from a personal computer to a cloud based storage solution.
 
+
+## Architecture
+
 The "Copy" utility has a flexible architecture :
 
 1. You have a repository like as a folder or a bucket located in a cloud storage
@@ -12,6 +15,7 @@ The "Copy" utility has a flexible architecture :
 ![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/OrganicArchitecture.png) 
 
 By example, you can use this kit for a backup strategy solution or a file server migration tool.
+ 
  
 ## Scenario 1
 ![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToGCS.png) 
