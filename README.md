@@ -15,22 +15,24 @@ By example, you can use this kit for a backup strategy solution or a file server
  
 > Scenario 1
 ![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToGCS.png) 
-Command line
 ```
 > dotnet StorageManagementKit.Copy.dll /src=local /srcpath=E:\ /dst=gcs /dstpath=my-bucket-name /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat
 ```
 
 > Scenario 2
 ![Flow GCS to local](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowGCSToLocal.png) 
-> Command line
-> `dotnet StorageManagementKit.Copy.dll /src=gcs /srcpath=my-bucket-name /dst=local /dstpath=E:\ /transform=unsecure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
+dotnet StorageManagementKit.Copy.dll /src=gcs /srcpath=my-bucket-name /dst=local /dstpath=E:\ /transform=unsecure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
 
 > Scenario 3
 ![Flow local to local](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToLocal.png) 
-> Command line
-> `dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=local /dstpath=E:\ /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
+dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=local /dstpath=E:\ /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
 
 > Scenario 4
 ![Flow local to S3](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/FlowLocalToS3.png) 
-> Command line
-> `dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=s3 /dstpath=my-bucket-name /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
+dotnet StorageManagementKit.Copy.dll /src=local /srcpath=D:\ /dst=s3 /dstpath=my-bucket-name /transform=secure /dstoauth=my_auth_json /filekey=my_key.dat`
+```
