@@ -1,0 +1,20 @@
+loop For each local file
+  LocalDirectory->LocalDirectory:Compare file hash with value stored in .smk-hive
+  alt If hash is different from the stored value in .smk-hive
+    note over LocalDirectory:The file has been modified since the last copy
+    LocalDirectory->DestinationRepository:Upload the file
+    LocalDirectory->LocalDirectory:Update the hive with the new hash
+  else Otherwise, compare with the value into the destination
+  
+    note over LocalDirectory:Valid the hash with the destination to be sure if the file has not been updated from another source.
+    
+    DestinationRepository->LocalDirectory:Get the hash
+    LocalDirectory->LocalDirectory:Compare local hash with the destination hash
+    
+    alt If local hash does not match with the destination hash
+      note over LocalDirectory:The file has been uploaded with a new version  since the last copy    
+      LocalDirectory->DestinationRepository:Upload the file
+      LocalDirectory->LocalDirectory:Update the hive with the new hash      
+    end
+  end
+end

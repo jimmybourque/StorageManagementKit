@@ -1,0 +1,7 @@
+loop For each local file
+  alt If the archive flag is enabled
+    LocalDirectory->DestinationRepository:Upload the file
+    LocalDirectory->LocalDirectory:Reset the archite flag
+    LocalDirectory->LocalDirectory:Update the hive with the new hash
+  end
+end
