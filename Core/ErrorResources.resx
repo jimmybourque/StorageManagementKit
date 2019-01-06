@@ -189,10 +189,10 @@
   <data name="SecureTransform_ProcessException" xml:space="preserve">
     <value>Error occured while securing the file {0}</value>
   </data>
-  <data name="SyncPhase_CleaningJboBackupBegun" xml:space="preserve">
+  <data name="SyncPhase_CleaningBegun" xml:space="preserve">
     <value>Deleting artefacts has begun</value>
   </data>
-  <data name="SyncPhase_CleaningJboBackupEnded" xml:space="preserve">
+  <data name="SyncPhase_CleaningEnded" xml:space="preserve">
     <value>Deleting artefacts has ended</value>
   </data>
   <data name="SyncPhase_DeletionBegun" xml:space="preserve">

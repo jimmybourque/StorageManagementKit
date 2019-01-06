@@ -33,7 +33,7 @@ namespace StorageManagementKit.Core.Transforms
                         Helpers.MandatoryValue("key filename", settings.TripleDesFilename);
 
                         if (!TripleDES.LoadKeyFile(settings.TripleDesFilename, out key, out iv, _logger))
-                            throw new JboBackupException(ErrorResources.TransformFactory_InstanciationFailed);
+                            throw new SmkException(ErrorResources.TransformFactory_InstanciationFailed);
 
                         SecureTransform trans = new SecureTransform(key, iv, _logger);
                         trans.Logger = _logger;
@@ -58,7 +58,7 @@ namespace StorageManagementKit.Core.Transforms
                     }
 
                 default:
-                    throw new JboBackupException($"Unsupported transformation kind '{settings.Kind}");
+                    throw new SmkException($"Unsupported transformation kind '{settings.Kind}");
             }
         }
     }

@@ -50,7 +50,7 @@ namespace StorageManagementKit.Core.Transforms
             }
             catch (Exception ex)
             {
-                throw new JboBackupException(
+                throw new SmkException(
                     string.Format(ErrorResources.UnsecureTransform_ProcessException, "DataContent", fo.Metadata.FullName), ex);
             }
 
@@ -60,7 +60,7 @@ namespace StorageManagementKit.Core.Transforms
             }
             catch (Exception ex)
             {
-                throw new JboBackupException(
+                throw new SmkException(
                     string.Format(ErrorResources.UnsecureTransform_ProcessException, "MetadataContent", fo.Metadata.FullName), ex);
             }
 

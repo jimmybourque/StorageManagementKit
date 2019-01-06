@@ -12,6 +12,7 @@ namespace StorageManagementKit.GcsRecover
         #region Members
         private static string[] _arguments;
         private static ILogging _logger;
+        private static string _title = "SMK-Recover";
         #endregion
 
         static void Main(string[] args)
@@ -26,7 +27,7 @@ namespace StorageManagementKit.GcsRecover
                 _arguments = args ?? throw new ArgumentNullException("args");
                 InitLogFile();
 
-                Console.Title = $"JboBackup";
+                Console.Title = _title;
 
                 // Display the help
                 if (_arguments.Any(a => a.Equals("?") || a.Equals("-help")))
@@ -37,7 +38,7 @@ namespace StorageManagementKit.GcsRecover
 
                 Run();
             }
-            catch (JboBackupException)
+            catch (SmkException)
             {
                 Console.WriteLine("Execution failed, see the log file");
             }
@@ -202,13 +203,13 @@ namespace StorageManagementKit.GcsRecover
 
             if (writeLog)
             {
-                _logger.WriteLine("JboBackup2 (c) Jimmy Bourque 2018");
+                _logger.WriteLine($"{_title} (c) Jimmy Bourque 2018");
                 _logger.WriteLine("--------------------------------------------------------");
                 _logger.WriteLine();
             }
             else
             {
-                Console.WriteLine("JboBackup2 (c) Jimmy Bourque 2018");
+                Console.WriteLine($"{_title} (c) Jimmy Bourque 2018");
                 Console.WriteLine("--------------------------------------------------------");
                 Console.WriteLine();
             }

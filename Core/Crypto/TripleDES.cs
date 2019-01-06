@@ -47,7 +47,7 @@ namespace StorageManagementKit.Core.Crypto
             }
             catch (Exception ex)
             {
-                throw new JboBackupException($"securing {file} failed", ex);
+                throw new SmkException($"securing {file} failed", ex);
             }
         }
 
@@ -72,7 +72,7 @@ namespace StorageManagementKit.Core.Crypto
             }
             catch (Exception ex)
             {
-                throw new JboBackupException($"Unsecuring {encryptedFile} failed", ex);
+                throw new SmkException($"Unsecuring {encryptedFile} failed", ex);
             }
         }
 

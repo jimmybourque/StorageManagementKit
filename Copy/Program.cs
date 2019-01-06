@@ -23,7 +23,7 @@ namespace StorageManagementKit.Copy
                     engine.Process();
                 }
             }
-            catch (JboBackupException)
+            catch (SmkException)
             {
                 Console.WriteLine("Execution failed, see the log file");
             }

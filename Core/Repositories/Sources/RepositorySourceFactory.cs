@@ -53,7 +53,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
                     }
 
                 default:
-                    throw new JboBackupException($"Unsupported repository source '{srcSettings.Repository}");
+                    throw new SmkException($"Unsupported repository source '{srcSettings.Repository}");
             }
 
             source.Transform = new TransformFactory(_logger).Create(trfSettings);

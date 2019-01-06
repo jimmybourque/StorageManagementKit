@@ -6,7 +6,8 @@
         public const string EncryptedExt = ".encrypted";
         public const string MetadataExt = ".meta";
         public const string MD5Ext = ".md5";
-        public const string Hive = ".jboBackup";
+        public const string Hive = ".smk-hive";
+        public const string Bin = "_smk-bin";
 
         // Storage attributes
         public const string MetadataEncryptedKey = "Metadata.encrypted";

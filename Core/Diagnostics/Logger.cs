@@ -156,7 +156,7 @@ namespace StorageManagementKit.Core.Diagnostics
                 }
                 catch (Exception ex)
                 {
-                    throw new JboBackupException($"Failed while creating the path {path}", ex);
+                    throw new SmkException($"Failed while creating the path {path}", ex);
                 }
 
             string newExt = $"{DateTime.Now.ToString("yyyyMMdd_HHmmss")}{Path.GetExtension(_logfile)}";
@@ -169,7 +169,7 @@ namespace StorageManagementKit.Core.Diagnostics
             }
             catch (Exception ex)
             {
-                throw new JboBackupException($"Failed while creating the file {LogFile}", ex);
+                throw new SmkException($"Failed while creating the file {LogFile}", ex);
             }
         }
 
@@ -201,7 +201,7 @@ namespace StorageManagementKit.Core.Diagnostics
                     }
                     catch (Exception ex)
                     {
-                        throw new JboBackupException(string.Format(ErrorResources.LogHelpers_CleaningLogFailed, files[i]) + Environment.NewLine + ex.Message);
+                        throw new SmkException(string.Format(ErrorResources.LogHelpers_CleaningLogFailed, files[i]) + Environment.NewLine + ex.Message);
                     }
                 }
         }

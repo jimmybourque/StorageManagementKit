@@ -44,8 +44,8 @@
         public const int LocalDirectoryDestination_DirectoryDeletionException = 247;
         public const int LocalDirectoryCleaner_FailedToDeleteFile = 248;
         public const int LocalDirectoryCleaner_DeletedFile = 249;
-        public const int SyncPhase_CleaningJboBackupBegun = 250;
-        public const int SyncPhase_CleaningJboBackupEnded = 251;
+        public const int SyncPhase_CleaningBegun = 250;
+        public const int SyncPhase_CleaningEnded = 251;
         public const int GcsRestore_GetVersionsException = 252;
         public const int GcsRestore_RestoreObjectException = 253;
         public const int GcsRestore_MissingMetadata = 254;

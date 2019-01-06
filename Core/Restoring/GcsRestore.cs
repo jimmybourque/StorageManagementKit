@@ -36,7 +36,7 @@ namespace StorageManagementKit.Core.Restoring
 
             // Loads the 3-DES key to decrypt the file from GCS
             if (!TripleDES.LoadKeyFile(keyFile, out _crypto_key, out _crypto_iv, logger))
-                throw new JboBackupException(ErrorResources.TransformFactory_InstanciationFailed);
+                throw new SmkException(ErrorResources.TransformFactory_InstanciationFailed);
         }
         #endregion
 
@@ -186,7 +186,7 @@ namespace StorageManagementKit.Core.Restoring
             }
             catch (Exception ex)
             {
-                throw new JboBackupException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, gcsObject.Name), ex);
+                throw new SmkException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, gcsObject.Name), ex);
             }
         }
         #endregion

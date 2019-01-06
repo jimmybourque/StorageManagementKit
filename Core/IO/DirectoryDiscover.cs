@@ -138,7 +138,7 @@ namespace StorageManagementKit.Core.IO
                     }
                     catch (Exception ex)
                     {
-                        throw new JboBackupException($"Failed to access {subDir.FullName}", ex);
+                        throw new SmkException($"Failed to access {subDir.FullName}", ex);
                     }
 
                     objectsFound.Add(subDir.ToDiscoveredObject());

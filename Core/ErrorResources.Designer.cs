@@ -279,18 +279,18 @@ namespace StorageManagementKit.Core {
         /// <summary>
         ///   Looks up a localized string similar to Deleting artefacts has begun.
         /// </summary>
-        public static string SyncPhase_CleaningJboBackupBegun {
+        public static string SyncPhase_CleaningBegun {
             get {
-                return ResourceManager.GetString("SyncPhase_CleaningJboBackupBegun", resourceCulture);
+                return ResourceManager.GetString("SyncPhase_CleaningBegun", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Deleting artefacts has ended.
         /// </summary>
-        public static string SyncPhase_CleaningJboBackupEnded {
+        public static string SyncPhase_CleaningEnded {
             get {
-                return ResourceManager.GetString("SyncPhase_CleaningJboBackupEnded", resourceCulture);
+                return ResourceManager.GetString("SyncPhase_CleaningEnded", resourceCulture);
             }
         }
         

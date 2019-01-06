@@ -96,7 +96,7 @@ namespace StorageManagementKit.Core
 
         internal static void MandatoryValue(string key, string value)
         {
-            if (value == null) throw new JboBackupException($"Missing value for '{key}'");
+            if (value == null) throw new SmkException($"Missing value for '{key}'");
         }
 
         /// <summary>

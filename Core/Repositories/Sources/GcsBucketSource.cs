@@ -62,10 +62,10 @@ namespace StorageManagementKit.Core.Repositories.Sources
         public bool Process()
         {
             if (Destination == null)
-                throw new JboBackupException($"'Destination' is not defined");
+                throw new SmkException($"'Destination' is not defined");
 
             if (Logger == null)
-                throw new JboBackupException($"Property 'Logger' is not defined");
+                throw new SmkException($"Property 'Logger' is not defined");
 
             _synchronizedCount = 0;
             _ignoredCount = 0;
@@ -176,7 +176,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
                         Interlocked.Increment(ref _errorCount);
                 }
                 else
-                    throw new JboBackupException($"Unsupported type for {files[i].GetType().Name}.{files[i].Kind}");
+                    throw new SmkException($"Unsupported type for {files[i].GetType().Name}.{files[i].Kind}");
             }
 
             Logger.WriteLog(ErrorCodes.SyncPhase_DeletionEnded2,
@@ -270,7 +270,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
             }
             catch (Exception ex)
             {
-                throw new JboBackupException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, obj.Name), ex);
+                throw new SmkException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, obj.Name), ex);
             }
 
             return Backup(obj, fo);

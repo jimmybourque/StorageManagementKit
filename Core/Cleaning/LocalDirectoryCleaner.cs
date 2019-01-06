@@ -21,11 +21,11 @@ namespace StorageManagementKit.Core.Cleaning
         }
 
         /// <summary>
-        /// Process the .jboBackup directory scan
+        /// Process the hive directory scan
         /// </summary>
         public bool Process()
         {
-            return new DirectoryDiscover($"{_path}\\.jboBackup", this, _logger, null).Run();
+            return new DirectoryDiscover($"{_path}\\{Constants.Hive}", this, _logger, null).Run();
         }
 
         /// <summary>
@@ -33,7 +33,7 @@ namespace StorageManagementKit.Core.Cleaning
         /// </summary>
         public bool OnFileFound(FileInfo fi)
         {
-            string originalFile = fi.FullName.Replace($"\\.jboBackup", "");
+            string originalFile = fi.FullName.Replace($"\\{Constants.Hive}", "");
 
             if (originalFile.EndsWith(Constants.MD5Ext))
                 originalFile = originalFile.Substring(0, originalFile.Length - Constants.MD5Ext.Length);

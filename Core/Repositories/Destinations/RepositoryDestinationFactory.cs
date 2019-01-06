@@ -49,7 +49,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                     }
 
                 default:
-                    throw new JboBackupException($"Unsupported repository destination '{settings.Repository}");
+                    throw new SmkException($"Unsupported repository destination '{settings.Repository}");
             }
         }
         #endregion

@@ -92,7 +92,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         /// </summary>
         public DiscoveredObject[] GetObjects()
         {
-            var exclusions = new string[] { $"{_path.RemoveTail()}\\.jboBackup", $"{_path.RemoveTail()}\\_jboBackup" };
+            var exclusions = new string[] { $"{_path.RemoveTail()}\\{Constants.Hive}", $"{_path.RemoveTail()}\\{Constants.Bin}" };
             var files = DirectoryDiscover.GetAllFiles(_path, exclusions, Logger);
 
             files.ForEach(f =>
@@ -202,7 +202,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                     // Delete the folder
                     Directory.Delete(folder, true);
 
-                    // Delete the .jboBackup' sub folder
+                    // Delete the hive sub folder
                     string jboDir = $"{_path}\\{Constants.Hive}{directory}";
 
                     if (Directory.Exists(jboDir))

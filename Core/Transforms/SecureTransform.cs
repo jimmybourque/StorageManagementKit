@@ -58,7 +58,7 @@ namespace StorageManagementKit.Core.Transforms
             }
             catch (Exception ex)
             {
-                throw new JboBackupException(string.Format(ErrorResources.SecureTransform_ProcessException, fo.Metadata.FullName), ex);
+                throw new SmkException(string.Format(ErrorResources.SecureTransform_ProcessException, fo.Metadata.FullName), ex);
             }
         }
         #endregion

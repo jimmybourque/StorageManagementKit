@@ -73,10 +73,10 @@ namespace StorageManagementKit.Core.Repositories.Sources
         public bool Process()
         {
             if (Destination == null)
-                throw new JboBackupException($"'Destination' is not defined");
+                throw new SmkException($"'Destination' is not defined");
 
             if (Logger == null)
-                throw new JboBackupException($"Property 'Logger' is not defined");
+                throw new SmkException($"Property 'Logger' is not defined");
 
             _synchronizedCount = 0;
             _ignoredCount = 0;
@@ -123,8 +123,8 @@ namespace StorageManagementKit.Core.Repositories.Sources
 
             var exclusions = new string[]
             {
-                $"{_pathNoTail}\\.jboBackup",
-                $"{_pathNoTail}\\_jboBackup"
+                $"{_pathNoTail}\\.smk-meta",
+                $"{_pathNoTail}\\_smk-bin"
             };
 
             bool result = new DirectoryDiscover(_path, this, Logger, exclusions).Run();
@@ -136,17 +136,17 @@ namespace StorageManagementKit.Core.Repositories.Sources
         }
 
         /// <summary>
-        /// Delete all no needed files located in the .jboBackup directory
+        /// Delete all no needed files located in the hive directory
         /// </summary>
         private bool CleanArtefacts()
         {
-            Logger.WriteLog(ErrorCodes.SyncPhase_CleaningJboBackupBegun,
-                ErrorResources.SyncPhase_CleaningJboBackupBegun, Severity.Information, VerboseLevel.User, true);
+            Logger.WriteLog(ErrorCodes.SyncPhase_CleaningBegun,
+                ErrorResources.SyncPhase_CleaningBegun, Severity.Information, VerboseLevel.User, true);
 
             bool result = new LocalDirectoryCleaner(_path, Logger, _progress, _wideDisplay).Process();
 
-            Logger.WriteLog(ErrorCodes.SyncPhase_CleaningJboBackupEnded,
-                ErrorResources.SyncPhase_CleaningJboBackupEnded, Severity.Information, VerboseLevel.User, true);
+            Logger.WriteLog(ErrorCodes.SyncPhase_CleaningEnded,
+                ErrorResources.SyncPhase_CleaningEnded, Severity.Information, VerboseLevel.User, true);
 
             return result;
         }
@@ -187,7 +187,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
                 string originalName = Helpers.RemoveSecExt(fi.Name);
                 // Gets the name without the extension '.encrypted'
                 string originalFullname = Helpers.RemoveSecExt(fi.FullName);
-                // Gets the hive path (\\.jboBackup\...)
+                // Gets the hive path (\\.[hive]\...)
                 string relativePath = originalFullname.Substring(_pathNoTail.Length + 1, originalFullname.Length - _pathNoTail.Length - 1);
                 // Get file path of the digital signature of the original file
                 string md5File = $"{_pathNoTail}\\{Constants.Hive}\\{relativePath}{Constants.MD5Ext}";
@@ -319,7 +319,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
                         Interlocked.Increment(ref _errorCount);
                 }
                 else
-                    throw new JboBackupException($"Unsupported type for {files[i].GetType().Name}.{files[i].Kind}");
+                    throw new SmkException($"Unsupported type for {files[i].GetType().Name}.{files[i].Kind}");
             }
 
             Logger.WriteLog(ErrorCodes.SyncPhase_DeletionEnded,

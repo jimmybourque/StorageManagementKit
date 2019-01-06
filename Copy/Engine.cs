@@ -1,15 +1,12 @@
 ﻿using StorageManagementKit.Core;
-using System.Linq;
 using StorageManagementKit.Core.Cleaning;
 using StorageManagementKit.Core.Crypto;
 using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.Repositories.Destinations;
 using StorageManagementKit.Core.Repositories.Sources;
 using StorageManagementKit.Core.Transforms;
-using StorageManagementKit.Core;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace StorageManagementKit.Copy
 {
@@ -19,6 +16,7 @@ namespace StorageManagementKit.Copy
         private string[] _arguments;
         private Logger _logger;
         private bool _disposed = false;
+        private const string _title = "SMK-Copy";
         #endregion
 
         #region Constructors
@@ -26,7 +24,7 @@ namespace StorageManagementKit.Copy
         {
             _arguments = args ?? throw new ArgumentNullException("args");
 
-            Console.Title = $"JboBackup";
+            Console.Title = _title;
             InitLogFile();
         }
 
@@ -77,7 +75,7 @@ namespace StorageManagementKit.Copy
             else if (!ConsoleHelpers.AllCommandExist(_arguments, typeof(Arguments)))
                 return;
 
-            // Proceed a cleanup of the folder .jboBackup
+            // Proceed a cleanup of the folder .smk-meta
             else if (ConsoleHelpers.CommandArgExists(_arguments, Arguments.CleanLocal))
                 CleanArtefacts();
 
@@ -96,7 +94,7 @@ namespace StorageManagementKit.Copy
         }
 
         /// <summary>
-        /// Delete all unused files into the .jboBackup directory
+        /// Delete all unused files into the .smk-hive directory
         /// </summary>
         private void CleanArtefacts()
         {
@@ -213,7 +211,7 @@ namespace StorageManagementKit.Copy
             Console.WriteLine($"/{Arguments.Wide}\t\tDisplay the full path of each object");
             Console.WriteLine($"/{Arguments.Log}\t\tThe log file name");
             Console.WriteLine($"/{Arguments.LogAge}\t\tThe number of log histories to keep (default=9)");
-            Console.WriteLine($"/{Arguments.CleanLocal}\tClean obsolete files into the local repository folder '.jboBackup'. Define the argument /{Arguments.SourcePath}");
+            Console.WriteLine($"/{Arguments.CleanLocal}\tClean obsolete files into the local repository folder '{Constants.Hive}'. Define the argument /{Arguments.SourcePath}");
 
             Console.WriteLine();
 
@@ -285,7 +283,7 @@ namespace StorageManagementKit.Copy
                 string detailed = $"{text} {objectName}";
 
                 Console.Write(detailed);
-                Console.Title = $"JboBackup2 [{percent}%]";
+                Console.Title = $"{_title} [{percent}%]";
 
                 // This is ensure that any previous printed text will be overwritten.
                 Console.ForegroundColor = ConsoleColor.White;
@@ -333,7 +331,7 @@ namespace StorageManagementKit.Copy
         {
             Console.Clear();
 
-            _logger.WriteLine("JboBackup2 (c) Jimmy Bourque 2018");
+            _logger.WriteLine($"{_title} (c) Jimmy Bourque 2018");
             _logger.WriteLine("--------------------------------------------------------");
             _logger.WriteLine();
         }
