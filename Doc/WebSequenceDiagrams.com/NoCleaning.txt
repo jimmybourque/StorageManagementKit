@@ -1,0 +1,9 @@
+loop For each destination object/file
+  SourceRepository->SourceRepository:Lookup for the local object
+  
+  alt If the local object exists
+    note over SourceRepository,DestinationRepository: Nothing to do
+  else
+    DestinationRepository->DestinationRepository:Delete the object from the destination
+  end
+end
