@@ -1,4 +1,8 @@
-loop For each destination object/file
+loop BACKUP: Backup objects from source to destination
+  note over SourceRepository,DestinationRepository:Modified objects are copied in according to the check level
+end
+
+loop CLEANING: For each destination object
   SourceRepository->SourceRepository:Lookup for the local object
   
   alt If the local object exists
