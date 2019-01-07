@@ -41,9 +41,9 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                 case DestinationRepository.GCS:
                     {
                         Helpers.MandatoryValue("destination", settings.Path);
-                        Helpers.MandatoryValue("OAuth filename", settings.OAuthFile);
+                        Helpers.MandatoryValue("api key filename", settings.ApiKey);
 
-                        GcsBucketDestination dest = new GcsBucketDestination(settings.Path, settings.OAuthFile);
+                        GcsBucketDestination dest = new GcsBucketDestination(settings.Path, settings.ApiKey);
                         dest.Logger = _logger;
                         return dest;
                     }

@@ -4,6 +4,6 @@
     {
         public DestinationRepository Repository { get; set; } = DestinationRepository.Local;
         public string Path { get; set; }
-        public string OAuthFile { get; set; }
+        public string ApiKey { get; set; }
     }
 }

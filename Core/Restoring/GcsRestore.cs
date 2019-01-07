@@ -16,7 +16,7 @@ namespace StorageManagementKit.Core.Restoring
         #region Properties
         private long _fileSize;
         private string _bucketName;
-        private string _oauthFile;
+        private string _apiKey;
         private byte[] _crypto_key;
         private byte[] _crypto_iv;
         private ILogging _logger;
@@ -24,13 +24,13 @@ namespace StorageManagementKit.Core.Restoring
 
         #region Constructor
         /// <param name="bucketName">GCS bucket name</param>
-        /// <param name="oauthFile">OAuth GCS key</param>
+        /// <param name="apiKey">OAuth GCS key</param>
         /// <param name="crypto_key">3-DES key</param>
         /// <param name="crypto_iv">3-DES vector</param>
-        public GcsRestore(string bucketName, string oauthFile, string keyFile, ILogging logger, string destination)
+        public GcsRestore(string bucketName, string apiKey, string keyFile, ILogging logger, string destination)
         {
             _bucketName = bucketName ?? throw new ArgumentNullException("bucketName");
-            _oauthFile = oauthFile ?? throw new ArgumentNullException("oauthFile");
+            _apiKey = apiKey ?? throw new ArgumentNullException("apiKey");
             keyFile = keyFile ?? throw new ArgumentNullException("keyFile");
             _logger = logger ?? throw new ArgumentNullException("logger");
 
@@ -48,7 +48,7 @@ namespace StorageManagementKit.Core.Restoring
         {
             try
             {
-                using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_oauthFile)))
+                using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_apiKey)))
                 {
                     ListObjectsOptions options = new ListObjectsOptions();
                     options.Versions = true;
@@ -93,7 +93,7 @@ namespace StorageManagementKit.Core.Restoring
         {
             try
             {
-                using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_oauthFile)))
+                using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_apiKey)))
                 {
                     var gen = new GetObjectOptions() { Generation = version.Generation };
 

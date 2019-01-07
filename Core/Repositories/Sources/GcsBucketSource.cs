@@ -39,19 +39,19 @@ namespace StorageManagementKit.Core.Repositories.Sources
         /// <summary>
         /// Constructor
         /// </summary>
-        public GcsBucketSource(string bucketName, string oauthFile, IProgressing progress, bool wideDisplay)
+        public GcsBucketSource(string bucketName, string apiKey, IProgressing progress, bool wideDisplay)
         {
             if (string.IsNullOrWhiteSpace(bucketName))
                 throw new ArgumentNullException("bucketName");
 
-            if (string.IsNullOrWhiteSpace(oauthFile))
-                throw new ArgumentNullException("oauthFile");
+            if (string.IsNullOrWhiteSpace(apiKey))
+                throw new ArgumentNullException("apiKey");
 
             _progress = progress ?? throw new ArgumentNullException("progress");
 
             _bucketName = bucketName;
             _wideDisplay = wideDisplay;
-            _client = StorageClient.Create(GoogleCredential.FromFile(oauthFile));
+            _client = StorageClient.Create(GoogleCredential.FromFile(apiKey));
         }
         #endregion
 

@@ -132,20 +132,20 @@ namespace StorageManagementKit.Copy
                     CheckLevel = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Check).ConvertToCheckLevel(),
                     NoCleaning = ConsoleHelpers.CommandArgExists(_arguments, Arguments.NoCleaning),
                     WideDisplay = ConsoleHelpers.CommandArgExists(_arguments, Arguments.Wide),
-                    OAuthFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceOAuthFile)
+                    ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey)
                 };
 
                 DestinationSettings dstSettings = new DestinationSettings()
                 {
                     Repository = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Dest).ConvertToDestinationRepository(),
                     Path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestPath),
-                    OAuthFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestOAuthFile)
+                    ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestApiKey)
                 };
 
                 TransformSettings trfSettings = new TransformSettings()
                 {
                     Kind = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Transform).ConvertToTransformKind(),
-                    TripleDesFilename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.TransformFileKey)
+                    TripleDesFilename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey)
                 };
 
                 IRepositorySource source = new RepositorySourceFactory(_logger, this).Create(srcSettings, dstSettings, trfSettings);
@@ -172,7 +172,7 @@ namespace StorageManagementKit.Copy
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"/{Arguments.Source}\t\t[{SourceRepository.Local}|{SourceRepository.GCS}] Local drive directory, Google Cloud Storage");
             Console.WriteLine($"/{Arguments.SourcePath}\tThe folder path, the GCS bucket name");
-            Console.WriteLine($"/{Arguments.SourceOAuthFile}\tThe JSon file that contains the OAuth token if [transform <> none]");
+            Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key if /{Arguments.Source} <> local");
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -193,7 +193,7 @@ namespace StorageManagementKit.Copy
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"/{Arguments.Dest}\t\t[{DestinationRepository.Local}|{DestinationRepository.GCS}] Local drive directory, Google Cloud Storage");
             Console.WriteLine($"/{Arguments.DestPath}\tThe folder path, the GCS bucket name");
-            Console.WriteLine($"/{Arguments.DestOAuthFile}\tThe JSon file that contains the OAuth token if [transform <> none]");
+            Console.WriteLine($"/{Arguments.DestApiKey}\tThe file that contains the API key if /{Arguments.Dest} <> local");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
 
@@ -201,7 +201,7 @@ namespace StorageManagementKit.Copy
             Console.WriteLine("Transformation");
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine($"/{Arguments.Transform}\t[{TransformKind.Secure}|{TransformKind.Unsecure}|{TransformKind.None}] Encrypt or decrypt with a 3-DES algorithm");
-            Console.WriteLine($"/{Arguments.TransformFileKey}\tThe file path that contains the key if [transform=none]");
+            Console.WriteLine($"/{Arguments.CryptoKey}\tThe file path that contains the key if [transform=none]");
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -236,9 +236,10 @@ namespace StorageManagementKit.Copy
 
             string ex1 = $@"/{Arguments.Source}={SourceRepository.Local} /{Arguments.SourcePath}=C:\repo " +
                 $@"/{Arguments.Dest}={DestinationRepository.GCS} /{Arguments.DestPath}=gcs-repo-name " +
-                $@"/{Arguments.Transform}={TransformKind.Secure} /{Arguments.DestOAuthFile}=oauth.json " +
-                $@"/{Arguments.TransformFileKey}=crypto.key /{Arguments.Log}=logs\trace.log " +
-                $@"/{Arguments.LogAge}=5 /{Arguments.Check}={CheckLevel.RemoteMD5}";
+                $@"/{Arguments.DestApiKey}=apikey.json " + 
+                $@"/{Arguments.Transform}={TransformKind.Secure} /{Arguments.CryptoKey}=crypto.key " + 
+                $@"/{Arguments.Log}=logs\trace.log /{Arguments.LogAge}=5 " + 
+                $@"/{Arguments.Check}={CheckLevel.RemoteMD5}";
 
             Console.WriteLine(ex1);
             Console.WriteLine();
@@ -248,9 +249,10 @@ namespace StorageManagementKit.Copy
             Console.ForegroundColor = ConsoleColor.White;
 
             string ex2 = $@"/{Arguments.Source}={SourceRepository.GCS} /{Arguments.SourcePath}=gcs-repo-name " +
-                $@"/{Arguments.Transform}={TransformKind.Unsecure} /{Arguments.SourceOAuthFile}=oauth.json " +
-                $@"/{Arguments.Dest}={DestinationRepository.GCS} /{Arguments.DestPath}=C:\repo " +
-                $@"/{Arguments.TransformFileKey}=crypto.key /{Arguments.Log}=logs\trace.log /{Arguments.LogAge}=5";
+                $@"/{Arguments.SourceApiKey}=apikey.json " +
+                $@"/{Arguments.Dest}={DestinationRepository.Local} /{Arguments.DestPath}=C:\repo " +
+                $@"/{Arguments.Transform}={TransformKind.Unsecure} /{Arguments.CryptoKey}=crypto.key " +
+                $@"/{Arguments.Log}=logs\trace.log /{Arguments.LogAge}=5";
 
             Console.WriteLine(ex2);
             Console.WriteLine();

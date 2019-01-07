@@ -46,9 +46,9 @@ namespace StorageManagementKit.Core.Repositories.Sources
                 case SourceRepository.GCS:
                     {
                         Helpers.MandatoryValue("source path", srcSettings.Path);
-                        Helpers.MandatoryValue("OAuth filename", srcSettings.OAuthFile);
+                        Helpers.MandatoryValue("api key filename", srcSettings.ApiKey);
 
-                        source = new GcsBucketSource(srcSettings.Path, srcSettings.OAuthFile, _progress, srcSettings.WideDisplay);
+                        source = new GcsBucketSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
                         break;
                     }
 

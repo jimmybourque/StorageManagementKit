@@ -99,8 +99,8 @@ namespace StorageManagementKit.GcsRecover
 
             string filename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Filename);
             string bucket = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Bucket);
-            string keyFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Filekey);
-            string oauthFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.OAuthFile);
+            string keyFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey);
+            string apiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.ApiKey);
             string destination = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Destination);
             string debug = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Debug);
             string log = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Log);
@@ -119,7 +119,7 @@ namespace StorageManagementKit.GcsRecover
             _logger.WriteLine("Contacting Google Cloud Storage Service...");
             _logger.WriteLine();
 
-            GcsRestore restore = new GcsRestore(bucket, oauthFile, keyFile, _logger, destination);
+            GcsRestore restore = new GcsRestore(bucket, apiKey, keyFile, _logger, destination);
             ObjectVersion[] versions = restore.GetVersions(filename.ToLower());
 
             if (versions == null)
