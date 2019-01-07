@@ -76,7 +76,7 @@ namespace StorageManagementKit.Copy
                 return;
 
             // Proceed a cleanup of the folder .smk-meta
-            else if (ConsoleHelpers.CommandArgExists(_arguments, Arguments.CleanLocal))
+            else if (ConsoleHelpers.CommandArgExists(_arguments, Arguments.RemoveArtifacts))
                 CleanArtefacts();
 
             // Generate a new key
@@ -211,7 +211,7 @@ namespace StorageManagementKit.Copy
             Console.WriteLine($"/{Arguments.Wide}\t\tDisplay the full path of each object");
             Console.WriteLine($"/{Arguments.Log}\t\tThe log file name");
             Console.WriteLine($"/{Arguments.LogAge}\t\tThe number of log histories to keep (default=9)");
-            Console.WriteLine($"/{Arguments.CleanLocal}\tClean obsolete files into the local repository folder '{Constants.Hive}' define by the argument /{Arguments.SourcePath}");
+            Console.WriteLine($"/{Arguments.RemoveArtifacts}\tClean obsolete files into the local repository folder '{Constants.Hive}' define by the argument /{Arguments.SourcePath}");
 
             Console.WriteLine();
 

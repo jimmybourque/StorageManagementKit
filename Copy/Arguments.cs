@@ -17,6 +17,6 @@
         public const string NewKey = "NewKey";
         public const string Check = "Check";
         public const string NoCleaning = "NoCleaning";
-        public const string CleanLocal = "CleanLocal";
+        public const string RemoveArtifacts = "RemoveArtifacts";
     }
 }

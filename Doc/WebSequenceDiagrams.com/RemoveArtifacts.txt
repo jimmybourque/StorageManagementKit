@@ -1,0 +1,17 @@
+loop BACKUP: Backup objects from source to destination
+  note over SourceRepository,DestinationRepository:Modified objects are copied in according to the check level
+end
+
+loop CLEANING: Delete obsolete objects into the destination
+  note over SourceRepository,DestinationRepository:Existing objects into the destination that not exist into the source are deleted
+end
+
+loop CLEAR ARTIFACTS: For each files into the local hive
+  SourceRepository->SourceRepository:Lookup if the orgininal file exists
+  
+  alt If the original file exists
+    note over SourceRepository: Nothing to do
+  else File is an artifact
+    SourceRepository->SourceRepository:Delete the artifact file
+  end
+end
