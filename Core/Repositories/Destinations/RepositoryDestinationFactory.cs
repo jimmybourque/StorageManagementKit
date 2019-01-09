@@ -41,7 +41,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                 case DestinationRepository.GCS:
                     {
                         Helpers.MandatoryValue("destination", settings.Path);
-                        Helpers.MandatoryValue("api key filename", settings.ApiKey);
+                        Helpers.MandatoryValue("destination api key filename", settings.ApiKey);
 
                         GcsBucketDestination dest = new GcsBucketDestination(settings.Path, settings.ApiKey);
                         dest.Logger = _logger;
@@ -51,7 +51,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                 case DestinationRepository.S3:
                     {
                         Helpers.MandatoryValue("destination", settings.Path);
-                        Helpers.MandatoryValue("api key filename", settings.ApiKey);
+                        Helpers.MandatoryValue("destination api key filename", settings.ApiKey);
 
                         S3BucketDestination dest = new S3BucketDestination(settings.Path, settings.ApiKey);
                         dest.Logger = _logger;

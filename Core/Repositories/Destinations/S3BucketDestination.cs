@@ -20,7 +20,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         #region Properties
         public ILogging Logger { get; set; }
 
-        public string Description { get { return $"S3 Bucket 'gs://{_bucketName}'"; } }
+        public string Description { get { return $"Bucket 'gs://{_bucketName}'"; } }
         #endregion
 
         #region Constructors
@@ -152,12 +152,16 @@ namespace StorageManagementKit.Core.Repositories.Destinations
 
                 return true;
             }
-            catch (Google.GoogleApiException ex)
+            catch (AggregateException ex)
             {
-                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
-                    return false;
-                else
-                    throw;
+                if ((ex.InnerExceptions.Count == 1) && (ex.InnerExceptions[0] is AmazonS3Exception))
+                {
+                    // The object does not exist into the bucket
+                    if ((ex.InnerExceptions[0] as AmazonS3Exception).ErrorCode.ToLower() == "notfound")
+                        return false;
+                }
+
+                throw;
             }
         }
 

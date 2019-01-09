@@ -55,5 +55,13 @@
         public const int S3BucketDestination_CommitException = 258;
         public const int S3BucketDestination_GettingObjectList = 259;
         public const int S3BucketDestination_FileDeleted = 260;
+        public const int SyncPhase_DeletionBegun3 = 261;
+        public const int SyncPhase_DeletionEnded3 = 262;
+        public const int SyncPhase_SendingBegun3 = 263;
+        public const int SyncPhase_SendingEnded3 = 264;
+        public const int S3BucketSource_GettingObjectList = 265;
+        public const int S3BucketSource_SyncFile = 266;
+        public const int S3BucketSource_IgnoredFile = 267;
+        public const int S3BucketSource_MissingMetadata = 268;
     }
 }

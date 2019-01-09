@@ -46,9 +46,18 @@ namespace StorageManagementKit.Core.Repositories.Sources
                 case SourceRepository.GCS:
                     {
                         Helpers.MandatoryValue("source path", srcSettings.Path);
-                        Helpers.MandatoryValue("api key filename", srcSettings.ApiKey);
+                        Helpers.MandatoryValue("source api key filename", srcSettings.ApiKey);
 
                         source = new GcsBucketSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
+                        break;
+                    }
+
+                case SourceRepository.S3:
+                    {
+                        Helpers.MandatoryValue("source path", srcSettings.Path);
+                        Helpers.MandatoryValue("source api key filename", srcSettings.ApiKey);
+
+                        source = new S3BucketSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
                         break;
                     }
 

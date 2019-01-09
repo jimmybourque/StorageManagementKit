@@ -295,6 +295,33 @@ namespace StorageManagementKit.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Downloading object &apos;{0}&apos; failed.
+        /// </summary>
+        public static string S3BucketSource_DownloadingError {
+            get {
+                return ResourceManager.GetString("S3BucketSource_DownloadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting object list...
+        /// </summary>
+        public static string S3BucketSource_GettingObjectList {
+            get {
+                return ResourceManager.GetString("S3BucketSource_GettingObjectList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
+        /// </summary>
+        public static string S3BucketSource_MissingMetadata {
+            get {
+                return ResourceManager.GetString("S3BucketSource_MissingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while securing the file {0}.
         /// </summary>
         public static string SecureTransform_ProcessException {

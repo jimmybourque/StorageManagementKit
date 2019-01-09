@@ -195,6 +195,15 @@
   <data name="S3BucketDestination_UnsecuredNotSupported" xml:space="preserve">
     <value>Only a secured transformation is supported</value>
   </data>
+  <data name="S3BucketSource_DownloadingError" xml:space="preserve">
+    <value>Downloading object '{0}' failed</value>
+  </data>
+  <data name="S3BucketSource_GettingObjectList" xml:space="preserve">
+    <value>Getting object list..</value>
+  </data>
+  <data name="S3BucketSource_MissingMetadata" xml:space="preserve">
+    <value>Missing metadata for '{0}'</value>
+  </data>
   <data name="SecureTransform_ProcessException" xml:space="preserve">
     <value>Error occured while securing the file {0}</value>
   </data>
