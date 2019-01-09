@@ -203,13 +203,13 @@ namespace StorageManagementKit.GcsRecover
 
             if (writeLog)
             {
-                _logger.WriteLine($"{_title} (c) Jimmy Bourque 2018");
+                _logger.WriteLine($"{_title} - Jimmy Bourque (GNU General Public License)");
                 _logger.WriteLine("--------------------------------------------------------");
                 _logger.WriteLine();
             }
             else
             {
-                Console.WriteLine($"{_title} (c) Jimmy Bourque 2018");
+                Console.WriteLine($"{_title} - Jimmy Bourque (GNU General Public License)");
                 Console.WriteLine("--------------------------------------------------------");
                 Console.WriteLine();
             }

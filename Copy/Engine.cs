@@ -333,7 +333,7 @@ namespace StorageManagementKit.Copy
         {
             Console.Clear();
 
-            _logger.WriteLine($"{_title} (c) Jimmy Bourque 2018");
+            _logger.WriteLine($"{_title} - Jimmy Bourque (GNU General Public License)");
             _logger.WriteLine("--------------------------------------------------------");
             _logger.WriteLine();
         }
