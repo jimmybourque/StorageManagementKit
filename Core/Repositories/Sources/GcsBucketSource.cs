@@ -32,7 +32,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
         public string _bucketName { get; set; }
         public IRepositoryDestination Destination { get; set; }
         public ITransforming Transform { get; set; }
-        public string Description { get { return $"GCS 'gs://{_bucketName}'"; } }
+        public string Description { get { return $"Bucket 'gs://{_bucketName}'"; } }
         #endregion
 
         #region Constructors

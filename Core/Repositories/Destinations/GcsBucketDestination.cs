@@ -20,7 +20,7 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         #region Properties
         public ILogging Logger { get; set; }
 
-        public string Description { get { return $"GCS Bucket 'gs://{_bucketName}'"; } }
+        public string Description { get { return $"Bucket 'gs://{_bucketName}'"; } }
         #endregion
 
         #region Constructors
