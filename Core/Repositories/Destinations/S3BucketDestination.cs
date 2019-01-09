@@ -1,20 +1,20 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Storage.V1;
+﻿using Amazon.S3;
+using Amazon.S3.Model;
+using StorageManagementKit.Core.AWS;
 using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.IO;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
 namespace StorageManagementKit.Core.Repositories.Destinations
 {
-    public class S3BucketDestination : IRepositoryDestination
+    public class S3BucketDestination : IRepositoryDestination, IDisposable
     {
         #region Members
         private string _bucketName;
-
-        private StorageClient _client;
+        private AmazonS3Client _client;
+        private bool _isDisposed;
         #endregion
 
         #region Properties
@@ -37,7 +37,8 @@ namespace StorageManagementKit.Core.Repositories.Destinations
 
             _bucketName = bucketName;
 
-            _client = StorageClient.Create(GoogleCredential.FromFile(keyFile));
+            S3Credentials credentials = S3Credentials.LoadKey(keyFile);
+            _client = new AmazonS3Client(credentials.AccessKeyId, credentials.SecretAccessKey, credentials.AwsRegion);
         }
         #endregion
 
@@ -49,8 +50,8 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         {
             if (!fo.IsSecured)
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketDestination_UnsecuredNotSupported,
-                    ErrorResources.GcsBucketDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.S3BucketDestination_UnsecuredNotSupported,
+                    ErrorResources.S3BucketDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
                 return false;
             }
 
@@ -63,29 +64,27 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                 if (destDataFile.StartsWith("/"))
                     destDataFile = destDataFile.Substring(1, destDataFile.Length - 1);
 
-                using (Stream stream = new MemoryStream(fo.DataContent))
+                using (Stream stm = new MemoryStream(fo.DataContent))
                 {
-                    var fileobj = new Google.Apis.Storage.v1.Data.Object()
+                    PutObjectRequest request = new PutObjectRequest()
                     {
-                        Name = destDataFile,
-                        Metadata = new Dictionary<string, string>(),
-                        Bucket = _bucketName
+                        BucketName = _bucketName,
+                        InputStream = stm,
+                        Key = destDataFile
                     };
 
-                    stream.Position = 0;
+                    request.Metadata.Add(Constants.MetadataEncryptedKey, fo.MetadataContent);
+                    request.Metadata.Add(Constants.MetadataMD5Key, fo.MetadataMD5);
+                    request.Metadata.Add(Constants.OriginalMD5Key, fo.Metadata.OriginalMD5);
 
-                    fileobj.Metadata.Add(Constants.MetadataEncryptedKey, fo.MetadataContent);
-                    fileobj.Metadata.Add(Constants.MetadataMD5Key, fo.MetadataMD5);
-                    fileobj.Metadata.Add(Constants.OriginalMD5Key, fo.Metadata.OriginalMD5);
-
-                    _client.UploadObject(fileobj, stream);
+                    _client.PutObjectAsync(request).Wait();
                 }
 
                 return true;
             }
             catch (Exception ex)
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.S3BucketDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
                 return false;
             }
         }
@@ -97,14 +96,20 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         {
             try
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketDestination_GettingObjectList,
-                    ErrorResources.GcsBucketDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.S3BucketDestination_GettingObjectList,
+                    ErrorResources.S3BucketDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
 
-                var list = _client.ListObjects(_bucketName);
-
-                return list.Select(l =>
+                ListObjectsRequest request = new ListObjectsRequest()
                 {
-                    string path = $"\\{l.Name}".Replace("/", "\\");
+                    BucketName = _bucketName,
+                    MaxKeys = int.MaxValue
+                };
+
+                ListObjectsResponse response = _client.ListObjectsAsync(request).Result;
+
+                return response.S3Objects.Select(o =>
+                {
+                    string path = $"\\{o.Key}".Replace("/", "\\");
 
                     return new DiscoveredObject()
                     {
@@ -115,8 +120,8 @@ namespace StorageManagementKit.Core.Repositories.Destinations
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketDestination_GettingListException,
-                    ErrorResources.GcsBucketDestination_GettingListException, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.S3BucketDestination_GettingListException,
+                    ErrorResources.S3BucketDestination_GettingListException, Severity.Error, VerboseLevel.User);
 
                 throw;
             }
@@ -132,10 +137,17 @@ namespace StorageManagementKit.Core.Repositories.Destinations
 
             try
             {
-                _client.DeleteObject(_bucketName, file.ToLower());
+                DeleteObjectRequest request = new DeleteObjectRequest()
+                {
+                    BucketName = _bucketName,
+                    Key = file.ToLower()
+                };
+
+                _client.DeleteObjectAsync(request).Wait();
+
                 string displayName = Helpers.FormatDisplayFileName(wideDisplay, file);
 
-                Logger.WriteLog(ErrorCodes.GcsBucketDestination_FileDeleted,
+                Logger.WriteLog(ErrorCodes.S3BucketDestination_FileDeleted,
                     $"del dst {displayName}", Severity.Information, VerboseLevel.User);
 
                 return true;
@@ -161,21 +173,31 @@ namespace StorageManagementKit.Core.Repositories.Destinations
 
             try
             {
-                var obj = _client.GetObject(_bucketName, destDataFile.ToLower());
+                GetObjectMetadataRequest request = new GetObjectMetadataRequest()
+                {
+                    BucketName = _bucketName,
+                    Key = destDataFile.ToLower()
+                };
 
-                string value;
-                if (obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out value))
-                    if (value != sourceOriginalMd5)
-                        return false;
+                GetObjectMetadataResponse response = _client.GetObjectMetadataAsync(request).Result;
 
-                return true;
+                string metaMD5 = $"x-amz-meta-{Constants.OriginalMD5Key}".ToLower();
+
+                if (response.Metadata.Keys.Any(m => m.Equals(metaMD5)))
+                    return response.Metadata[metaMD5] == sourceOriginalMd5;
+
+                return false;
             }
-            catch (Google.GoogleApiException ex)
+            catch (AggregateException ex)
             {
-                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
-                    return false;
-                else
-                    throw;
+                if ((ex.InnerExceptions.Count == 1) && (ex.InnerExceptions[0] is AmazonS3Exception))
+                {
+                    // The object does not exist into the bucket
+                    if ((ex.InnerExceptions[0] as AmazonS3Exception).ErrorCode.ToLower() == "notfound")
+                        return false;
+                }
+
+                throw;
             }
         }
 
@@ -185,6 +207,15 @@ namespace StorageManagementKit.Core.Repositories.Destinations
         bool IRepositoryDestination.AfterDirectoryScan(string directory, bool wideDisplay)
         {
             return true; // Nothing to do!
+        }
+
+        public void Dispose()
+        {
+            if (!_isDisposed)
+            {
+                _client.Dispose();
+                _isDisposed = true;
+            }
         }
         #endregion
     }

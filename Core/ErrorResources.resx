@@ -186,6 +186,15 @@
   <data name="LogHelpers_CleaningLogFailed" xml:space="preserve">
     <value>Failed to delete the artifact {0}</value>
   </data>
+  <data name="S3BucketDestination_GettingListException" xml:space="preserve">
+    <value>Error while getting object list from S3 Bucket</value>
+  </data>
+  <data name="S3BucketDestination_GettingObjectList" xml:space="preserve">
+    <value>Getting object list..</value>
+  </data>
+  <data name="S3BucketDestination_UnsecuredNotSupported" xml:space="preserve">
+    <value>Only a secured transformation is supported</value>
+  </data>
   <data name="SecureTransform_ProcessException" xml:space="preserve">
     <value>Error occured while securing the file {0}</value>
   </data>

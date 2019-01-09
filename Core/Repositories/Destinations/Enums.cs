@@ -3,6 +3,7 @@
     public enum DestinationRepository
     {
         Local,
-        GCS
+        GCS,
+        S3
     }
 }

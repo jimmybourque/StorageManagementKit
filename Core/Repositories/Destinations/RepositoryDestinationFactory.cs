@@ -48,6 +48,16 @@ namespace StorageManagementKit.Core.Repositories.Destinations
                         return dest;
                     }
 
+                case DestinationRepository.S3:
+                    {
+                        Helpers.MandatoryValue("destination", settings.Path);
+                        Helpers.MandatoryValue("api key filename", settings.ApiKey);
+
+                        S3BucketDestination dest = new S3BucketDestination(settings.Path, settings.ApiKey);
+                        dest.Logger = _logger;
+                        return dest;
+                    }
+
                 default:
                     throw new SmkException($"Unsupported repository destination '{settings.Repository}");
             }

@@ -268,6 +268,33 @@ namespace StorageManagementKit.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error while getting object list from S3 Bucket.
+        /// </summary>
+        public static string S3BucketDestination_GettingListException {
+            get {
+                return ResourceManager.GetString("S3BucketDestination_GettingListException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting object list...
+        /// </summary>
+        public static string S3BucketDestination_GettingObjectList {
+            get {
+                return ResourceManager.GetString("S3BucketDestination_GettingObjectList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a secured transformation is supported.
+        /// </summary>
+        public static string S3BucketDestination_UnsecuredNotSupported {
+            get {
+                return ResourceManager.GetString("S3BucketDestination_UnsecuredNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while securing the file {0}.
         /// </summary>
         public static string SecureTransform_ProcessException {

@@ -3,7 +3,8 @@
     public enum SourceRepository
     {
         Local,
-        GCS
+        GCS,
+        S3
     }
 
     public enum CheckLevel

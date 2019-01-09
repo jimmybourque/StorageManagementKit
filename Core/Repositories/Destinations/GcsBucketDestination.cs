@@ -165,10 +165,9 @@ namespace StorageManagementKit.Core.Repositories.Destinations
 
                 string value;
                 if (obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out value))
-                    if (value != sourceOriginalMd5)
-                        return false;
+                    return value == sourceOriginalMd5;
 
-                return true;
+                return false;
             }
             catch (Google.GoogleApiException ex)
             {

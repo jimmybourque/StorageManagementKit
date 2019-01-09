@@ -50,5 +50,10 @@
         public const int GcsRestore_RestoreObjectException = 253;
         public const int GcsRestore_MissingMetadata = 254;
         public const int GcsRestore_ObjectNotFound = 255;
+        public const int S3BucketDestination_GettingListException = 256;
+        public const int S3BucketDestination_UnsecuredNotSupported = 257;
+        public const int S3BucketDestination_CommitException = 258;
+        public const int S3BucketDestination_GettingObjectList = 259;
+        public const int S3BucketDestination_FileDeleted = 260;
     }
 }

@@ -31,6 +31,8 @@ namespace StorageManagementKit.Copy
                 return SourceRepository.Local;
             else if (value.ToLower() == SourceRepository.GCS.ToString().ToLower())
                 return SourceRepository.GCS;
+            else if (value.ToLower() == SourceRepository.S3.ToString().ToLower())
+                return SourceRepository.S3;
 
             throw new Exception($"Supported sources are [{SourceRepository.Local}|{SourceRepository.GCS}]");
         }
@@ -44,6 +46,8 @@ namespace StorageManagementKit.Copy
                 return DestinationRepository.Local;
             else if (value.ToLower() == DestinationRepository.GCS.ToString().ToLower())
                 return DestinationRepository.GCS;
+            else if (value.ToLower() == DestinationRepository.S3.ToString().ToLower())
+                return DestinationRepository.S3;
 
             throw new Exception($"Supported destinations are [{DestinationRepository.Local}|{DestinationRepository.GCS}]");
         }

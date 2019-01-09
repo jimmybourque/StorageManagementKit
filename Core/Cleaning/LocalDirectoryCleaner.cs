@@ -75,8 +75,9 @@ namespace StorageManagementKit.Core.Cleaning
             {
                 File.Delete(filename);
 
+                string displayFilename = filename.Replace($"{_path}\\{Constants.Hive}", "");
                 _logger.WriteLog(ErrorCodes.LocalDirectoryCleaner_DeletedFile,
-                    $"del dst {Helpers.FormatDisplayFileName(_wideDisplay, filename)}",
+                    $"del src {Helpers.FormatDisplayFileName(_wideDisplay, displayFilename)}",
                     Severity.Information, VerboseLevel.User);
 
                 return true;
