@@ -1,7 +1,7 @@
 ﻿using StorageManagementKit.Core.Restoring;
 using System;
 
-namespace StorageManagementKit.GcsRecover
+namespace StorageManagementKit.Recover
 {
     public static class Extensions
     {

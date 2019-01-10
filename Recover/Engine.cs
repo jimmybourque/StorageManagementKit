@@ -3,60 +3,43 @@ using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.Restoring;
 using System;
 using System.Linq;
-using System.Reflection;
 
-namespace StorageManagementKit.GcsRecover
+namespace StorageManagementKit.Recover
 {
-    class Program
+    public class Engine
     {
         #region Members
-        private static string[] _arguments;
-        private static ILogging _logger;
-        private static string _title = "SMK-Recover";
+        private string[] _arguments;
+        private ILogging _logger;
+        private string _title = "SMK-Recover";
         #endregion
 
-        static void Main(string[] args)
+        #region Constructors
+        public Engine(string[] args)
         {
-            try
-            {
-                // Excludes the program name
-                args = Environment.GetCommandLineArgs()
-                   .Where(a => a.ToLower() != Assembly.GetExecutingAssembly().Location.ToLower())
-                   .ToArray();
+            _arguments = args ?? throw new ArgumentNullException("args");
 
-                _arguments = args ?? throw new ArgumentNullException("args");
-                InitLogFile();
+            Console.Title = _title;
+            InitLogFile();
+        }
+        #endregion
 
-                Console.Title = _title;
+        public void Process()
+        {
+            // Display the help
+            if (_arguments.Any(a => a.Equals("?") || a.Equals("-help")))
+                DisplayHelp();
 
-                // Display the help
-                if (_arguments.Any(a => a.Equals("?") || a.Equals("-help")))
-                    DisplayHelp();
+            else if (!ConsoleHelpers.AllCommandExist(_arguments, typeof(Arguments)))
+                return;
 
-                else if (!ConsoleHelpers.AllCommandExist(_arguments, typeof(Arguments)))
-                    return;
-
-                Run();
-            }
-            catch (SmkException)
-            {
-                Console.WriteLine("Execution failed, see the log file");
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Internal Error{Environment.NewLine}{ex.Message}");
-            }
-            finally
-            {
-#if DEBUG
-                Console.WriteLine();
-                Console.WriteLine($"Press a enter to exit");
-                Console.ReadLine();
-#endif
-            }
+            Recover();
         }
 
-        private static void InitLogFile()
+        /// <summary>
+        /// Init the log file
+        /// </summary>
+        private void InitLogFile()
         {
             try
             {
@@ -92,7 +75,10 @@ namespace StorageManagementKit.GcsRecover
             throw new NotImplementedException();
         }
 
-        private static void Run()
+        /// <summary>
+        /// Recover a file from a cloud service bucket
+        /// </summary>
+        private void Recover()
         {
             Console.Clear();
             DisplayHeader(true);
@@ -153,12 +139,14 @@ namespace StorageManagementKit.GcsRecover
 
             _logger.Write($"{destFile} successfully restored");
             _logger.WriteLine();
+
+            DisplayFooter();
         }
 
         /// <summary>
         /// Requests a choice to the user. He must select an object version.
         /// </summary>
-        public static int GetUserChoice(int count)
+        private static int GetUserChoice(int count)
         {
             string choice;
             int ichoice = -1;
@@ -187,7 +175,7 @@ namespace StorageManagementKit.GcsRecover
         /// <summary>
         /// Displays the list of existing versions
         /// </summary>
-        private static void DisplayList(ObjectVersion[] versions, string bucket, string filename)
+        private void DisplayList(ObjectVersion[] versions, string bucket, string filename)
         {
             Console.Clear();
             DisplayHeader(false);
@@ -214,7 +202,7 @@ namespace StorageManagementKit.GcsRecover
             _logger.WriteLine();
         }
 
-        private static void DisplayHeader(bool writeLog)
+        private void DisplayHeader(bool writeLog)
         {
             Console.Clear();
 
@@ -230,6 +218,13 @@ namespace StorageManagementKit.GcsRecover
                 Console.WriteLine("--------------------------------------------------------");
                 Console.WriteLine();
             }
+        }
+
+        private void DisplayFooter()
+        {
+            _logger.WriteLine();
+            _logger.WriteLine("--------------------------------------------------------");
+            _logger.WriteLine();
         }
     }
 }

@@ -3,14 +3,13 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Company>d</Company>
     <Authors>Jimmy Bourque, Canada, Quebec</Authors>
-    <Company>immy Bourque, Canada, Quebec</Company>
-    <Product>Storage Management Kit - Copy</Product>
+    <Product>Storage Management Kit - Recover</Product>
     <RepositoryUrl>https://github.com/jimmybourque/StorageManagementKit.git</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageProjectUrl>https://github.com/jimmybourque/StorageManagementKit</PackageProjectUrl>
-    <PackageLicenseUrl>GNU</PackageLicenseUrl>
-    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <Copyright>GNU</Copyright>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 

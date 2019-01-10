@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace StorageManagementKit.Copy
+namespace StorageManagementKit.Recover
 {
     class Program
     {

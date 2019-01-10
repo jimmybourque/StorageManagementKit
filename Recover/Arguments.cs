@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.GcsRecover
+﻿namespace StorageManagementKit.Recover
 {
     public class Arguments
     {

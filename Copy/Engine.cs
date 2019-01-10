@@ -35,6 +35,9 @@ namespace StorageManagementKit.Copy
         #endregion
 
         #region Public methods
+        /// <summary>
+        /// Init the log file
+        /// </summary>
         private void InitLogFile()
         {
             try
