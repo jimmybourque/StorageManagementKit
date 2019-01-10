@@ -1,8 +1,8 @@
 ﻿using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.Repositories.Destinations;
+using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
 
-namespace StorageManagementKit.Core.Repositories.Sources
+namespace StorageManagementKit.Core.Copying.Sources
 {
     public interface IRepositorySource
     {

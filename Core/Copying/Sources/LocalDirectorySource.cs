@@ -2,14 +2,14 @@
 using StorageManagementKit.Core.Crypto;
 using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.IO;
-using StorageManagementKit.Core.Repositories.Destinations;
+using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
 using System;
 using System.IO;
 using System.Text;
 using System.Threading;
 
-namespace StorageManagementKit.Core.Repositories.Sources
+namespace StorageManagementKit.Core.Copying.Sources
 {
     public class LocalDirectorySource : IRepositorySource, IDirectoryDiscovering
     {

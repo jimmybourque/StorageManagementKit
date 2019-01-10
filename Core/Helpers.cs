@@ -43,6 +43,11 @@ namespace StorageManagementKit.Core
             }
         }
 
+        internal static void MandatoryValue(string v, object cryptoKey)
+        {
+            throw new NotImplementedException();
+        }
+
         public static string FormatByteSize(long size)
         {
             if (size > 1024 * 1024 * 1024)

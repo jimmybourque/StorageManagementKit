@@ -42,9 +42,9 @@ namespace StorageManagementKit.GcsRecover
             {
                 Console.WriteLine("Execution failed, see the log file");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Internal Error");
+                Console.WriteLine($"Internal Error{Environment.NewLine}{ex.Message}");
             }
             finally
             {
@@ -97,44 +97,61 @@ namespace StorageManagementKit.GcsRecover
             Console.Clear();
             DisplayHeader(true);
 
-            string filename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Filename);
-            string bucket = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Bucket);
-            string keyFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey);
-            string apiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.ApiKey);
-            string destination = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Destination);
+            string source = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Source);
+            string sourceFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceFile);
+            string sourcePath = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourcePath);
+            string sourceApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey);
+            string cryptoKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey);
+            string destFile = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestFile);
             string debug = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Debug);
             string log = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Log);
             string logAge = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.LogAge);
 
+
             // Requests a filename from the user if it was not provided...
-            if (string.IsNullOrEmpty(filename))
+            if (string.IsNullOrEmpty(sourceFile))
             {
                 Console.WriteLine("Type the file name to restore and press enter:");
-                filename = Console.ReadLine().Replace("\\", "/");
+                sourceFile = Console.ReadLine().Replace("\\", "/");
             }
+            else
+                sourceFile = sourceFile.Replace("\\", "/");
+
 
             // Gets the list of versions about the requested object
             Console.Clear();
             DisplayHeader(false);
-            _logger.WriteLine("Contacting Google Cloud Storage Service...");
+            _logger.WriteLine("Contacting the cloud storage service...");
             _logger.WriteLine();
 
-            GcsRestore restore = new GcsRestore(bucket, apiKey, keyFile, _logger, destination);
-            ObjectVersion[] versions = restore.GetVersions(filename.ToLower());
+            RestoringSettings settings = new RestoringSettings()
+            {
+                Repository = source.ConvertToSourceRepository(),
+                ApiKey = sourceApiKey,
+                Path = sourcePath,
+                CryptoKey = cryptoKey
+            };
+
+            // Creates the restoring instance for the selected cloud service source
+            IRestoring restorer = new RestoringFactory(_logger).Create(settings);
+
+            // Requests the list of available versions for the given object
+            ObjectVersion[] versions = restorer.GetVersions(sourceFile.ToLower());
 
             if (versions == null)
                 return;
 
-            DisplayList(versions, bucket, filename);
+            DisplayList(versions, sourcePath, sourceFile);
 
             int choice = GetUserChoice(versions.Length);
             if (choice == -1)
                 return;
 
-            if (!restore.RestoreObject(versions[choice - 1], ref destination))
+            // The user has choosen the version, requests the file
+            if (!restorer.Restore(versions[choice - 1], ref destFile))
                 return;
 
-            _logger.Write($"{destination} successfully restored");
+            _logger.Write($"{destFile} successfully restored");
             _logger.WriteLine();
         }
 

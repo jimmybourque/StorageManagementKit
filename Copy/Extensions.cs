@@ -1,5 +1,5 @@
-﻿using StorageManagementKit.Core.Repositories.Destinations;
-using StorageManagementKit.Core.Repositories.Sources;
+﻿using StorageManagementKit.Core.Copying.Destinations;
+using StorageManagementKit.Core.Copying.Sources;
 using StorageManagementKit.Core.Transforms;
 using System;
 
@@ -34,7 +34,7 @@ namespace StorageManagementKit.Copy
             else if (value.ToLower() == SourceRepository.S3.ToString().ToLower())
                 return SourceRepository.S3;
 
-            throw new Exception($"Supported sources are [{SourceRepository.Local}|{SourceRepository.GCS}]");
+            throw new Exception($"Supported sources are [{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}]");
         }
 
         public static DestinationRepository ConvertToDestinationRepository(this string value)
@@ -49,7 +49,7 @@ namespace StorageManagementKit.Copy
             else if (value.ToLower() == DestinationRepository.S3.ToString().ToLower())
                 return DestinationRepository.S3;
 
-            throw new Exception($"Supported destinations are [{DestinationRepository.Local}|{DestinationRepository.GCS}]");
+            throw new Exception($"Supported destinations are [{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}]");
         }
 
         public static TransformKind ConvertToTransformKind(this string value)

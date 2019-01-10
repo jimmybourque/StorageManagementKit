@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace StorageManagementKit.Core.Repositories
+namespace StorageManagementKit.Core.Copying
 {
     public class FileMetadata
     {

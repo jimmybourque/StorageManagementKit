@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core.Repositories.Destinations
+﻿namespace StorageManagementKit.Core.Copying.Destinations
 {
     public class DestinationSettings
     {

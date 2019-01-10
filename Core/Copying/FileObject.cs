@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core.Repositories
+﻿namespace StorageManagementKit.Core.Copying
 {
     public class FileObject
     {

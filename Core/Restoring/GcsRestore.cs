@@ -1,9 +1,8 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Apis.Download;
 using Google.Cloud.Storage.V1;
-using StorageManagementKit.Core.Crypto;
+using StorageManagementKit.Core.Copying;
 using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.Repositories;
 using StorageManagementKit.Core.Transforms;
 using System;
 using System.IO;
@@ -11,7 +10,7 @@ using System.Linq;
 
 namespace StorageManagementKit.Core.Restoring
 {
-    public class GcsRestore : IProgress<IDownloadProgress>
+    public class GcsRestore : IProgress<IDownloadProgress>, IRestoring
     {
         #region Properties
         private long _fileSize;
@@ -27,16 +26,13 @@ namespace StorageManagementKit.Core.Restoring
         /// <param name="apiKey">OAuth GCS key</param>
         /// <param name="crypto_key">3-DES key</param>
         /// <param name="crypto_iv">3-DES vector</param>
-        public GcsRestore(string bucketName, string apiKey, string keyFile, ILogging logger, string destination)
+        public GcsRestore(string bucketName, string apiKey, byte[] crypto_key, byte[] crypto_iv, ILogging logger)
         {
             _bucketName = bucketName ?? throw new ArgumentNullException("bucketName");
             _apiKey = apiKey ?? throw new ArgumentNullException("apiKey");
-            keyFile = keyFile ?? throw new ArgumentNullException("keyFile");
+            _crypto_key = crypto_key ?? throw new ArgumentNullException("key");
+            _crypto_iv = crypto_iv ?? throw new ArgumentNullException("iv");
             _logger = logger ?? throw new ArgumentNullException("logger");
-
-            // Loads the 3-DES key to decrypt the file from GCS
-            if (!TripleDES.LoadKeyFile(keyFile, out _crypto_key, out _crypto_iv, logger))
-                throw new SmkException(ErrorResources.TransformFactory_InstanciationFailed);
         }
         #endregion
 
@@ -89,7 +85,7 @@ namespace StorageManagementKit.Core.Restoring
         /// <summary>
         /// Restore the object for a specific date time
         /// </summary>
-        public bool RestoreObject(ObjectVersion version, ref string destination)
+        public bool Restore(ObjectVersion version, ref string destination)
         {
             try
             {

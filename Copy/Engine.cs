@@ -1,9 +1,9 @@
 ﻿using StorageManagementKit.Core;
 using StorageManagementKit.Core.Cleaning;
+using StorageManagementKit.Core.Copying.Destinations;
+using StorageManagementKit.Core.Copying.Sources;
 using StorageManagementKit.Core.Crypto;
 using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.Repositories.Destinations;
-using StorageManagementKit.Core.Repositories.Sources;
 using StorageManagementKit.Core.Transforms;
 using System;
 using System.Linq;

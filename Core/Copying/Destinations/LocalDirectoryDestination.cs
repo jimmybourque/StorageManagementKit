@@ -5,7 +5,7 @@ using StorageManagementKit.Core.Transforms;
 using System;
 using System.IO;
 
-namespace StorageManagementKit.Core.Repositories.Destinations
+namespace StorageManagementKit.Core.Copying.Destinations
 {
     public class LocalDirectoryDestination : IRepositoryDestination
     {

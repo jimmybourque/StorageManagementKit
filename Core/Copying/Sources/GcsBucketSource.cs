@@ -1,18 +1,17 @@
-﻿using Amazon.S3;
-using Amazon.S3.Model;
-using StorageManagementKit.Core.AWS;
+﻿using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
 using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.IO;
-using StorageManagementKit.Core.Repositories.Destinations;
+using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
-namespace StorageManagementKit.Core.Repositories.Sources
+namespace StorageManagementKit.Core.Copying.Sources
 {
-
-    public class S3BucketSource : IRepositorySource
+    public class GcsBucketSource : IRepositorySource
     {
         #region Members
         public ILogging Logger { get; set; }
@@ -26,21 +25,21 @@ namespace StorageManagementKit.Core.Repositories.Sources
         private int _fileScanned = 0;
         private int _fileSynchronized = 0;
         private bool _wideDisplay;
-        private AmazonS3Client _client;
+        private StorageClient _client;
         #endregion
 
         #region Properties
         public string _bucketName { get; set; }
         public IRepositoryDestination Destination { get; set; }
         public ITransforming Transform { get; set; }
-        public string Description { get { return $"Bucket 's3://{_bucketName}'"; } }
+        public string Description { get { return $"Bucket 'gs://{_bucketName}'"; } }
         #endregion
 
         #region Constructors
         /// <summary>
         /// Constructor
         /// </summary>
-        public S3BucketSource(string bucketName, string keyFile, IProgressing progress, bool wideDisplay)
+        public GcsBucketSource(string bucketName, string keyFile, IProgressing progress, bool wideDisplay)
         {
             if (string.IsNullOrWhiteSpace(bucketName))
                 throw new ArgumentNullException("bucketName");
@@ -52,9 +51,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
 
             _bucketName = bucketName;
             _wideDisplay = wideDisplay;
-
-            S3Credentials credentials = S3Credentials.LoadKey(keyFile);
-            _client = new AmazonS3Client(credentials.AccessKeyId, credentials.SecretAccessKey, credentials.AwsRegion);
+            _client = StorageClient.Create(GoogleCredential.FromFile(keyFile));
         }
         #endregion
 
@@ -108,25 +105,15 @@ namespace StorageManagementKit.Core.Repositories.Sources
         {
             try
             {
-                DeleteObjectRequest request = new DeleteObjectRequest()
-                {
-                    BucketName = _bucketName,
-                    Key = objectName.ToLower()
-                };
-
-                _client.DeleteObjectAsync(request).Wait();
+                _client.DeleteObject(_bucketName, objectName.ToLower());
                 return true;
             }
-            catch (AggregateException ex)
+            catch (Google.GoogleApiException ex)
             {
-                if ((ex.InnerExceptions.Count == 1) && (ex.InnerExceptions[0] is AmazonS3Exception))
-                {
-                    // The object does not exist into the bucket
-                    if ((ex.InnerExceptions[0] as AmazonS3Exception).ErrorCode.ToLower() == "notfound")
-                        return false;
-                }
-
-                throw;
+                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
+                    return false;
+                else
+                    throw;
             }
         }
 
@@ -146,25 +133,14 @@ namespace StorageManagementKit.Core.Repositories.Sources
 
                 objectName = objectName.Replace("\\", "/");
 
-                GetObjectMetadataRequest request = new GetObjectMetadataRequest()
-                {
-                    BucketName = _bucketName,
-                    Key = objectName.ToLower()
-                };
-
-                GetObjectMetadataResponse response = _client.GetObjectMetadataAsync(request).Result;
-                return true;
+                return _client.GetObject(_bucketName, objectName.ToLower()) != null;
             }
-            catch (AggregateException ex)
+            catch (Google.GoogleApiException ex)
             {
-                if ((ex.InnerExceptions.Count == 1) && (ex.InnerExceptions[0] is AmazonS3Exception))
-                {
-                    // The object does not exist into the bucket
-                    if ((ex.InnerExceptions[0] as AmazonS3Exception).ErrorCode.ToLower() == "notfound")
-                        return false;
-                }
-
-                throw;
+                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
+                    return false;
+                else
+                    throw;
             }
         }
 
@@ -173,7 +149,7 @@ namespace StorageManagementKit.Core.Repositories.Sources
         /// </summary>
         private bool DeleteLocalGhostFiles()
         {
-            Logger.WriteLog(ErrorCodes.SyncPhase_DeletionBegun3,
+            Logger.WriteLog(ErrorCodes.SyncPhase_DeletionBegun2,
                 ErrorResources.SyncPhase_DeletionBegun, Severity.Information, VerboseLevel.User, true);
 
             DiscoveredObject[] files = Destination.GetObjects();
@@ -184,11 +160,11 @@ namespace StorageManagementKit.Core.Repositories.Sources
 
                 if (files[i].Kind == ObjectKind.File)
                 {
-                    string s3Object = Helpers.RemoveSecExt(files[i].FullName);
+                    string gcsObject = Helpers.RemoveSecExt(files[i].FullName);
 
-                    if (!ObjectExists(s3Object))
+                    if (!ObjectExists(gcsObject))
                     {
-                        if (Destination.Delete(s3Object, _wideDisplay))
+                        if (Destination.Delete(gcsObject, _wideDisplay))
                             Interlocked.Increment(ref _deletedCount);
                         else
                             Interlocked.Increment(ref _errorCount);
@@ -203,48 +179,34 @@ namespace StorageManagementKit.Core.Repositories.Sources
                     throw new SmkException($"Unsupported type for {files[i].GetType().Name}.{files[i].Kind}");
             }
 
-            Logger.WriteLog(ErrorCodes.SyncPhase_DeletionEnded3,
+            Logger.WriteLog(ErrorCodes.SyncPhase_DeletionEnded2,
                 ErrorResources.SyncPhase_DeletionEnded, Severity.Information, VerboseLevel.User, true);
 
             return _errorCount == 0;
         }
 
         /// <summary>
-        /// Diagnostics each object returned by S3
+        /// Diagnostics each object returned by GCS
         /// </summary>
         private bool ScanBucket()
         {
-            Logger.WriteLog(ErrorCodes.SyncPhase_SendingBegun3,
+            Logger.WriteLog(ErrorCodes.SyncPhase_SendingBegun2,
                 ErrorResources.SyncPhase_SendingBegun, Severity.Information, VerboseLevel.User, true);
 
-            Logger.WriteLog(ErrorCodes.S3BucketSource_GettingObjectList,
-                    ErrorResources.S3BucketSource_GettingObjectList, Severity.Information, VerboseLevel.User);
+            Logger.WriteLog(ErrorCodes.GcsBucketSource_GettingObjectList,
+                    ErrorResources.GcsBucketSource_GettingObjectList, Severity.Information, VerboseLevel.User);
 
-            // Gets the summary about an object
-            ListObjectsRequest request = new ListObjectsRequest()
+            var list = _client.ListObjects(_bucketName).ToList();
+
+            for (int i = 0; i < list.Count; i++)
             {
-                BucketName = _bucketName,
-                MaxKeys = int.MaxValue
-            };
+                ScanProgress(i, list.Count, list[i].Name);
 
-            ListObjectsResponse list = _client.ListObjectsAsync(request).Result;
-
-            for (int i = 0; i < list.S3Objects.Count; i++)
-            {
-                ScanProgress(i, list.S3Objects.Count, list.S3Objects[i].Key);
-
-                // Gets the meta data about an object
-                var meta = _client.GetObjectMetadataAsync(new GetObjectMetadataRequest()
-                {
-                    BucketName = _bucketName,
-                    Key = list.S3Objects[i].Key
-                }).Result.Metadata;
-
-                if (!ProcessObject(list.S3Objects[i], meta))
+                if (!ProcessObject(list[i]))
                     break;
             }
 
-            Logger.WriteLog(ErrorCodes.SyncPhase_SendingEnded3,
+            Logger.WriteLog(ErrorCodes.SyncPhase_SendingEnded2,
                 ErrorResources.SyncPhase_SendingEnded, Severity.Information, VerboseLevel.User, true);
 
             return true;
@@ -253,26 +215,33 @@ namespace StorageManagementKit.Core.Repositories.Sources
         /// <summary>
         /// The <see cref="DirectoryDiscover" /> has found a file
         /// </summary>
-        private bool ProcessObject(S3Object obj, MetadataCollection metadata)
+        private bool ProcessObject(Google.Apis.Storage.v1.Data.Object obj)
         {
-            string originalName = Helpers.RemoveSecExt(obj.Key);
+            string originalName = Helpers.RemoveSecExt(obj.Name);
 
             string displayName = Helpers.FormatDisplayFileName(_wideDisplay, $"\\{originalName}");
 
             Logger.WriteLog(ErrorCodes.LocalDirectorySource_FileProcessing,
                 $">> Processing {displayName}", Severity.Information, VerboseLevel.Debug);
 
-            // Extracts the metadata values
-            string originalMD5 = null, metadataMD5 = null, metadataEncrypted = null;
-            if (!ExtractMetadata(obj, metadata, out originalMD5, out metadataMD5, out metadataEncrypted))
+            string originalMD5, metadataMD5, metadataEncrypted;
+
+            if (!obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
+                !obj.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
+                !obj.Metadata.TryGetValue(Constants.MetadataEncryptedKey, out metadataEncrypted))
+            {
+                Logger.WriteLog(ErrorCodes.GcsBucketSource_MissingMetadata,
+                    string.Format(ErrorResources.GcsBucketSource_MissingMetadata, obj.Name),
+                    Severity.Error, VerboseLevel.User);
                 return false;
+            }
 
             Interlocked.Increment(ref _fileScanned);
             Interlocked.Add(ref _readSize, (long)obj.Size);
 
             if (Destination.IsMetadataMatch($"\\{originalName}", Transform.IsSecured, originalMD5))
             {
-                Logger.WriteLog(ErrorCodes.S3BucketSource_IgnoredFile,
+                Logger.WriteLog(ErrorCodes.GcsBucketSource_IgnoredFile,
                     $">> Ignored {Helpers.FormatDisplayFileName(_wideDisplay, $"\\{originalName}")}", Severity.Information, VerboseLevel.Debug);
 
                 Interlocked.Increment(ref _ignoredCount);
@@ -290,71 +259,26 @@ namespace StorageManagementKit.Core.Repositories.Sources
 
             try
             {
-                GetObjectRequest getRequest = new GetObjectRequest()
+                using (MemoryStream memStm = new MemoryStream())
                 {
-                    BucketName = _bucketName,
-                    Key = obj.Key
-                };
-
-                using (GetObjectResponse response = _client.GetObjectAsync(getRequest).Result)
-                {
-                    using (MemoryStream stm = new MemoryStream())
-                    {
-                        response.ResponseStream.CopyTo(stm);
-                        stm.Position = 0;
-                        fo.DataContent = stm.ToArray();
-                    }
+                    _client.DownloadObject(obj, memStm);
+                    memStm.Position = 0;
+                    fo.DataContent = memStm.ToArray();
                 }
             }
             catch (Exception ex)
             {
-                throw new SmkException(string.Format(ErrorResources.S3BucketSource_DownloadingError, obj.Key), ex);
+                throw new SmkException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, obj.Name), ex);
             }
 
             return Backup(obj, fo);
         }
 
-        /// <summary>
-        /// Extracts the metadata values from the collection.
-        /// </summary>
-        private bool ExtractMetadata(S3Object obj, MetadataCollection metadata, out string originalMD5, out string metadataMD5, out string metadataEncrypted)
+        private bool Backup(Google.Apis.Storage.v1.Data.Object obj, FileObject fo)
         {
-            originalMD5 = null;
-            metadataMD5 = null;
-            metadataEncrypted = null;
+            string displayName = Helpers.FormatDisplayFileName(_wideDisplay, Helpers.RemoveSecExt(obj.Name));
 
-            string nameOriginalMD5 = $"x-amz-meta-{Constants.OriginalMD5Key}".ToLower();
-            string nameMetaMD5 = $"x-amz-meta-{Constants.MetadataMD5Key}".ToLower();
-            string nameMetaEncrypted = $"x-amz-meta-{Constants.MetadataEncryptedKey}".ToLower();
-
-            foreach (var key in metadata.Keys)
-            {
-                if (key == nameOriginalMD5)
-                    originalMD5 = metadata[key];
-
-                if (key == nameMetaMD5)
-                    metadataMD5 = metadata[key];
-
-                if (key == nameMetaEncrypted)
-                    metadataEncrypted = metadata[key];
-            }
-
-            if ((originalMD5 == null) || (metadataMD5 == null) || (metadataEncrypted == null))
-            {
-                Logger.WriteLog(ErrorCodes.S3BucketSource_MissingMetadata,
-                    string.Format(ErrorResources.S3BucketSource_MissingMetadata, obj.Key),
-                    Severity.Error, VerboseLevel.User);
-                return false;
-            }
-
-            return true;
-        }
-
-        private bool Backup(S3Object obj, FileObject fo)
-        {
-            string displayName = Helpers.FormatDisplayFileName(_wideDisplay, Helpers.RemoveSecExt(obj.Key));
-
-            Logger.WriteLog(ErrorCodes.S3BucketSource_SyncFile,
+            Logger.WriteLog(ErrorCodes.GcsBucketSource_SyncFile,
                 $"cpy src {displayName} [{Helpers.FormatByteSize(fo.DataContent.Length)}]", Severity.Information, VerboseLevel.User);
 
             // Transforms the file if a transformation is provided

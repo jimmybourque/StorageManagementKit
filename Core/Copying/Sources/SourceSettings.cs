@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core.Repositories.Sources
+﻿namespace StorageManagementKit.Core.Copying.Sources
 {
     public class SourceSettings
     {
