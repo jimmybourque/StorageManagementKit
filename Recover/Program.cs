@@ -20,15 +20,23 @@ namespace StorageManagementKit.Recover
 
                 new Engine(args).Process();
             }
-            catch (SmkException)
+            catch (SmkException ex)
             {
-                Console.WriteLine("Execution failed, see the log file");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"There was a problem:");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("Internal Error");
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine($"There was an unknown error:");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(ex.Message);
             }
 #if DEBUG
+
+            Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
             Console.WriteLine($"Press a enter to exit");
             Console.ReadLine();

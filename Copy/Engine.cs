@@ -124,43 +124,36 @@ namespace StorageManagementKit.Copy
         /// </summary>
         public void Backup()
         {
-            try
+            DisplayHeader();
+
+            SourceSettings srcSettings = new SourceSettings()
             {
-                DisplayHeader();
+                Repository = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Source).ConvertToSourceRepository(),
+                Path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourcePath),
+                CheckLevel = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Check).ConvertToCheckLevel(),
+                NoCleaning = ConsoleHelpers.CommandArgExists(_arguments, Arguments.NoCleaning),
+                WideDisplay = ConsoleHelpers.CommandArgExists(_arguments, Arguments.Wide),
+                ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey)
+            };
 
-                SourceSettings srcSettings = new SourceSettings()
-                {
-                    Repository = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Source).ConvertToSourceRepository(),
-                    Path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourcePath),
-                    CheckLevel = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Check).ConvertToCheckLevel(),
-                    NoCleaning = ConsoleHelpers.CommandArgExists(_arguments, Arguments.NoCleaning),
-                    WideDisplay = ConsoleHelpers.CommandArgExists(_arguments, Arguments.Wide),
-                    ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey)
-                };
-
-                DestinationSettings dstSettings = new DestinationSettings()
-                {
-                    Repository = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Dest).ConvertToDestinationRepository(),
-                    Path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestPath),
-                    ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestApiKey)
-                };
-
-                TransformSettings trfSettings = new TransformSettings()
-                {
-                    Kind = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Transform).ConvertToTransformKind(),
-                    TripleDesFilename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey)
-                };
-
-                IRepositorySource source = new RepositorySourceFactory(_logger, this).Create(srcSettings, dstSettings, trfSettings);
-                WriteComponentLabels(source);
-                source.Process();
-
-                DisplayFooter();
-            }
-            catch (Exception ex)
+            DestinationSettings dstSettings = new DestinationSettings()
             {
-                Console.WriteLine(ex.Message);
-            }
+                Repository = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Dest).ConvertToDestinationRepository(),
+                Path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestPath),
+                ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.DestApiKey)
+            };
+
+            TransformSettings trfSettings = new TransformSettings()
+            {
+                Kind = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Transform).ConvertToTransformKind(),
+                TripleDesFilename = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.CryptoKey)
+            };
+
+            IRepositorySource source = new RepositorySourceFactory(_logger, this).Create(srcSettings, dstSettings, trfSettings);
+            WriteComponentLabels(source);
+            source.Process();
+
+            DisplayFooter();
         }
 
         /// <summary>
@@ -239,9 +232,9 @@ namespace StorageManagementKit.Copy
 
             string ex1 = $@"/{Arguments.Source}={SourceRepository.Local} /{Arguments.SourcePath}=C:\repo " +
                 $@"/{Arguments.Dest}={DestinationRepository.GCS} /{Arguments.DestPath}=gcs-repo-name " +
-                $@"/{Arguments.DestApiKey}=apikey.json " + 
-                $@"/{Arguments.Transform}={TransformKind.Secure} /{Arguments.CryptoKey}=crypto.key " + 
-                $@"/{Arguments.Log}=logs\trace.log /{Arguments.LogAge}=5 " + 
+                $@"/{Arguments.DestApiKey}=apikey.json " +
+                $@"/{Arguments.Transform}={TransformKind.Secure} /{Arguments.CryptoKey}=crypto.key " +
+                $@"/{Arguments.Log}=logs\trace.log /{Arguments.LogAge}=5 " +
                 $@"/{Arguments.Check}={CheckLevel.RemoteMD5}";
 
             Console.WriteLine(ex1);

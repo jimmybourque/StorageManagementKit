@@ -1,4 +1,5 @@
-﻿using StorageManagementKit.Core.Restoring;
+﻿using StorageManagementKit.Core;
+using StorageManagementKit.Core.Restoring;
 using System;
 
 namespace StorageManagementKit.Recover
@@ -15,7 +16,7 @@ namespace StorageManagementKit.Recover
             else if (value.ToLower() == RestoringRepositorySource.S3.ToString().ToLower())
                 return RestoringRepositorySource.S3;
 
-            throw new Exception($"Supported sources are [{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}]");
+            throw new SmkException($"Supported sources are [{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}]");
         }
     }
 }
