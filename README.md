@@ -14,6 +14,6 @@ The "Copy" utility has a flexible architecture :
 1. You have a repository located in a folder or a cloud storage
 
 
-![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/OrganicArchitecture.png) 
+![Flow local to GCS](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/Copy-OrganicArchitecture.png) 
 
 Refers to the [WIKI](https://github.com/jimmybourque/StorageManagementKit/wiki/Storage-Management-Kit) for get more information.
