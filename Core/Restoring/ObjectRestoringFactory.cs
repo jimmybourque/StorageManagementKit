@@ -4,14 +4,14 @@ using System;
 
 namespace StorageManagementKit.Core.Restoring
 {
-    public class RestoringFactory
+    public class ObjectRestoringFactory
     {
         #region Members
         private ILogging _logger;
         #endregion
 
         #region Constructors
-        public RestoringFactory(ILogging logger)
+        public ObjectRestoringFactory(ILogging logger)
         {
             _logger = logger ?? throw new ArgumentNullException("logger");
         }
@@ -19,9 +19,9 @@ namespace StorageManagementKit.Core.Restoring
 
         #region Public methods
         /// <summary>
-        /// Create a <see cref="IRestoring"/> instance in according to the command arguments
+        /// Create a <see cref="IObjectRestoring"/> instance in according to the command arguments
         /// </summary>
-        public IRestoring Create(RestoringSettings settings)
+        public IObjectRestoring Create(RestoringSettings settings)
         {
             settings = settings ?? throw new ArgumentNullException("settings");
 
@@ -39,7 +39,7 @@ namespace StorageManagementKit.Core.Restoring
                         Helpers.MandatoryValue("source path", settings.Path);
                         Helpers.MandatoryValue("source API key", settings.ApiKey);
 
-                        return new GcsRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
+                        return new GcsObjectRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
                     }
 
                 case RestoringRepositorySource.S3:
@@ -47,7 +47,7 @@ namespace StorageManagementKit.Core.Restoring
                         Helpers.MandatoryValue("source path", settings.Path);
                         Helpers.MandatoryValue("source API key", settings.ApiKey);
 
-                        return new S3Restore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
+                        return new S3ObjectRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
                     }
 
                 default:

@@ -46,10 +46,10 @@
         public const int LocalDirectoryCleaner_DeletedFile = 249;
         public const int SyncPhase_CleaningBegun = 250;
         public const int SyncPhase_CleaningEnded = 251;
-        public const int GcsRestore_GetVersionsException = 252;
-        public const int GcsRestore_RestoreObjectException = 253;
-        public const int GcsRestore_MissingMetadata = 254;
-        public const int GcsRestore_ObjectNotFound = 255;
+        public const int GcsObjectRestore_GetVersionsException = 252;
+        public const int GcsObjectRestore_RestoreObjectException = 253;
+        public const int GcsObjectRestore_MissingMetadata = 254;
+        public const int GcsObjectRestore_ObjectNotFound = 255;
         public const int S3BucketDestination_GettingListException = 256;
         public const int S3BucketDestination_UnsecuredNotSupported = 257;
         public const int S3BucketDestination_CommitException = 258;
@@ -63,7 +63,9 @@
         public const int S3BucketSource_SyncFile = 266;
         public const int S3BucketSource_IgnoredFile = 267;
         public const int S3BucketSource_MissingMetadata = 268;
-        public const int S3Restore_ObjectNotFound = 269;
-        public const int S3Restore_GetVersionsException = 270;
+        public const int S3ObjectRestore_ObjectNotFound = 269;
+        public const int S3ObjectRestore_GetVersionsException = 270;
+        public const int S3ObjectRestore_RestoreObjectException = 271;
+        public const int S3ObjectRestore_MissingMetadata = 272;
     }
 }

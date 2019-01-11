@@ -155,7 +155,7 @@ namespace StorageManagementKit.Recover
             };
 
             // Creates the restoring instance for the selected cloud service source
-            IRestoring restorer = new RestoringFactory(_logger).Create(settings);
+            IObjectRestoring restorer = new ObjectRestoringFactory(_logger).Create(settings);
 
             // Requests the list of available versions for the given object
             ObjectVersion[] versions = restorer.GetVersions(sourceFile.ToLower());
@@ -232,7 +232,7 @@ namespace StorageManagementKit.Recover
             for (int i = 0; i < versions.Length; i++)
             {
                 string size = Helpers.FormatByteSize(versions[i].Size);
-                _logger.WriteLine($"[{i + 1}]\t{versions[i].TimeCreated}\t{size}\t{versions[i].StorageClass}\t{versions[i].Generation}");
+                _logger.WriteLine($"[{i + 1}]\t{versions[i].TimeCreated}\t{size}\t{versions[i].StorageClass}\t{versions[i].VersionId}");
             }
 
             _logger.WriteLine();

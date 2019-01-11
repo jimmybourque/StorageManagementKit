@@ -189,36 +189,36 @@ namespace StorageManagementKit.Core {
         /// <summary>
         ///   Looks up a localized string similar to Failed while getting object versions from GCP.
         /// </summary>
-        public static string GcsRestore_GetVersionsException {
+        public static string GcsObjectRestore_GetVersionsException {
             get {
-                return ResourceManager.GetString("GcsRestore_GetVersionsException", resourceCulture);
+                return ResourceManager.GetString("GcsObjectRestore_GetVersionsException", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
         /// </summary>
-        public static string GcsRestore_MissingMetadata {
+        public static string GcsObjectRestore_MissingMetadata {
             get {
-                return ResourceManager.GetString("GcsRestore_MissingMetadata", resourceCulture);
+                return ResourceManager.GetString("GcsObjectRestore_MissingMetadata", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Object &apos;{0}&apos; not found.
         /// </summary>
-        public static string GcsRestore_ObjectNotFound {
+        public static string GcsObjectRestore_ObjectNotFound {
             get {
-                return ResourceManager.GetString("GcsRestore_ObjectNotFound", resourceCulture);
+                return ResourceManager.GetString("GcsObjectRestore_ObjectNotFound", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Failed while downloading object from GCP.
         /// </summary>
-        public static string GcsRestore_RestoreObjectException {
+        public static string GcsObjectRestore_RestoreObjectException {
             get {
-                return ResourceManager.GetString("GcsRestore_RestoreObjectException", resourceCulture);
+                return ResourceManager.GetString("GcsObjectRestore_RestoreObjectException", resourceCulture);
             }
         }
         
@@ -322,20 +322,47 @@ namespace StorageManagementKit.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
+        /// </summary>
+        public static string S3ObjectBucketSource_MissingMetadata {
+            get {
+                return ResourceManager.GetString("S3ObjectBucketSource_MissingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed while getting object versions from S3.
         /// </summary>
-        public static string S3Restore_GetVersionsException {
+        public static string S3ObjectRestore_GetVersionsException {
             get {
-                return ResourceManager.GetString("S3Restore_GetVersionsException", resourceCulture);
+                return ResourceManager.GetString("S3ObjectRestore_GetVersionsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
+        /// </summary>
+        public static string S3ObjectRestore_MissingMetadata {
+            get {
+                return ResourceManager.GetString("S3ObjectRestore_MissingMetadata", resourceCulture);
             }
         }
         
         /// <summary>
         ///   Looks up a localized string similar to Object &apos;{0}&apos; not found.
         /// </summary>
-        public static string S3Restore_ObjectNotFound {
+        public static string S3ObjectRestore_ObjectNotFound {
             get {
-                return ResourceManager.GetString("S3Restore_ObjectNotFound", resourceCulture);
+                return ResourceManager.GetString("S3ObjectRestore_ObjectNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed while downloading object from S3.
+        /// </summary>
+        public static string S3ObjectRestore_RestoreObjectException {
+            get {
+                return ResourceManager.GetString("S3ObjectRestore_RestoreObjectException", resourceCulture);
             }
         }
         

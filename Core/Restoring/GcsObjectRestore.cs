@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace StorageManagementKit.Core.Restoring
 {
-    public class GcsRestore : IProgress<IDownloadProgress>, IRestoring
+    public class GcsObjectRestore : IProgress<IDownloadProgress>, IObjectRestoring
     {
         #region Properties
         private long _fileSize;
@@ -26,7 +26,7 @@ namespace StorageManagementKit.Core.Restoring
         /// <param name="apiKey">OAuth GCS key</param>
         /// <param name="crypto_key">3-DES key</param>
         /// <param name="crypto_iv">3-DES vector</param>
-        public GcsRestore(string bucketName, string apiKey, byte[] crypto_key, byte[] crypto_iv, ILogging logger)
+        public GcsObjectRestore(string bucketName, string apiKey, byte[] crypto_key, byte[] crypto_iv, ILogging logger)
         {
             _bucketName = bucketName ?? throw new ArgumentNullException("bucketName");
             _apiKey = apiKey ?? throw new ArgumentNullException("apiKey");
@@ -55,8 +55,8 @@ namespace StorageManagementKit.Core.Restoring
                     // Be sure the object exists
                     if ((list == null) || (list.Count() == 0))
                     {
-                        _logger.WriteLog(ErrorCodes.GcsRestore_ObjectNotFound,
-                            string.Format(ErrorResources.GcsRestore_ObjectNotFound, filename),
+                        _logger.WriteLog(ErrorCodes.GcsObjectRestore_ObjectNotFound,
+                            string.Format(ErrorResources.GcsObjectRestore_ObjectNotFound, filename),
                             Severity.Error, VerboseLevel.User);
                         return null;
                     }
@@ -69,14 +69,14 @@ namespace StorageManagementKit.Core.Restoring
                             TimeCreated = item.TimeCreated.GetValueOrDefault(),
                             StorageClass = item.StorageClass,
                             Size = (long)item.Size.GetValueOrDefault(),
-                            Generation = item.Generation
+                            VersionId = item.Generation
                         }).ToArray();
                 }
             }
             catch (Exception ex)
             {
-                _logger.WriteLog(ErrorCodes.GcsRestore_GetVersionsException,
-                    ErrorResources.GcsRestore_GetVersionsException + Environment.NewLine + ex.Message,
+                _logger.WriteLog(ErrorCodes.GcsObjectRestore_GetVersionsException,
+                    ErrorResources.GcsObjectRestore_GetVersionsException + Environment.NewLine + ex.Message,
                     Severity.Error, VerboseLevel.User);
                 return null;
             }
@@ -91,18 +91,16 @@ namespace StorageManagementKit.Core.Restoring
             {
                 using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_apiKey)))
                 {
-                    var gen = new GetObjectOptions() { Generation = (long?)version.Generation };
-
+                    var gen = new GetObjectOptions() { Generation = (long?)version.VersionId };
                     var obj = _client.GetObject(_bucketName, version.Name, gen);
-
                     string originalMD5, metadataMD5, metadataEncrypted;
 
                     if (!obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
                         !obj.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
                         !obj.Metadata.TryGetValue(Constants.MetadataEncryptedKey, out metadataEncrypted))
                     {
-                        _logger.WriteLog(ErrorCodes.GcsRestore_MissingMetadata,
-                            string.Format(ErrorResources.GcsRestore_MissingMetadata, obj.Name),
+                        _logger.WriteLog(ErrorCodes.GcsObjectRestore_MissingMetadata,
+                            string.Format(ErrorResources.GcsObjectRestore_MissingMetadata, obj.Name),
                             Severity.Error, VerboseLevel.User);
                         return false;
                     }
@@ -129,7 +127,7 @@ namespace StorageManagementKit.Core.Restoring
                     {
                         string destName = version.Name.Replace(Constants.EncryptedExt, "");
                         destination = Path.GetFileNameWithoutExtension(destName);
-                        destination = $"{destination}.{version.Generation}.restore{Path.GetExtension(destName)}";
+                        destination = $"{destination}.{version.VersionId}.restore{Path.GetExtension(destName)}";
                     }
 
                     File.WriteAllBytes(destination, fo.DataContent);
@@ -141,8 +139,8 @@ namespace StorageManagementKit.Core.Restoring
             }
             catch (Exception ex)
             {
-                _logger.WriteLog(ErrorCodes.GcsRestore_RestoreObjectException,
-                    ErrorResources.GcsRestore_RestoreObjectException + Environment.NewLine + ex.Message,
+                _logger.WriteLog(ErrorCodes.GcsObjectRestore_RestoreObjectException,
+                    ErrorResources.GcsObjectRestore_RestoreObjectException + Environment.NewLine + ex.Message,
                     Severity.Error, VerboseLevel.User);
                 return false;
             }
@@ -174,7 +172,7 @@ namespace StorageManagementKit.Core.Restoring
                     Helpers.WriteProgress(0);
 
                     _fileSize = (long)gcsObject.Size.GetValueOrDefault();
-                    client.DownloadObject(gcsObject, memStm, new DownloadObjectOptions() { Generation = (long?)version.Generation }, this);
+                    client.DownloadObject(gcsObject, memStm, new DownloadObjectOptions() { Generation = (long?)version.VersionId }, this);
 
                     memStm.Position = 0;
                     fileObject.DataContent = memStm.ToArray();

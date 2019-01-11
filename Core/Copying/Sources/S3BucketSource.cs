@@ -11,7 +11,6 @@ using System.Threading;
 
 namespace StorageManagementKit.Core.Copying.Sources
 {
-
     public class S3BucketSource : IRepositorySource
     {
         #region Members
@@ -298,6 +297,7 @@ namespace StorageManagementKit.Core.Copying.Sources
 
                 using (GetObjectResponse response = _client.GetObjectAsync(getRequest).Result)
                 {
+                    // Extracts the file content
                     using (MemoryStream stm = new MemoryStream())
                     {
                         response.ResponseStream.CopyTo(stm);
