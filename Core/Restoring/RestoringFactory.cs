@@ -44,7 +44,10 @@ namespace StorageManagementKit.Core.Restoring
 
                 case RestoringRepositorySource.S3:
                     {
-                        return null;
+                        Helpers.MandatoryValue("source path", settings.Path);
+                        Helpers.MandatoryValue("source API key", settings.ApiKey);
+
+                        return new S3Restore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
                     }
 
                 default:

@@ -63,5 +63,7 @@
         public const int S3BucketSource_SyncFile = 266;
         public const int S3BucketSource_IgnoredFile = 267;
         public const int S3BucketSource_MissingMetadata = 268;
+        public const int S3Restore_ObjectNotFound = 269;
+        public const int S3Restore_GetVersionsException = 270;
     }
 }

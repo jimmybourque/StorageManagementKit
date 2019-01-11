@@ -28,7 +28,10 @@ namespace StorageManagementKit.Recover
         {
             // Display the help
             if (_arguments.Any(a => a.Equals("?") || a.Equals("-help")))
+            {
                 DisplayHelp();
+                return;
+            }
 
             else if (!ConsoleHelpers.AllCommandExist(_arguments, typeof(Arguments)))
                 return;
@@ -70,9 +73,42 @@ namespace StorageManagementKit.Recover
             }
         }
 
-        private static void DisplayHelp()
+        private void DisplayHelp()
         {
-            throw new NotImplementedException();
+            DisplayHeader(false);
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Source");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"/{Arguments.Source}\t\t[{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}] Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.SourcePath}\tThe bucket name");
+            Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key. Used to decrypt the file");
+            Console.WriteLine($"/{Arguments.SourceFile}\tThe bucket object key name; include the path with the filename");
+
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Destination");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"/{Arguments.DestFile}\tThe file path where the file must be recovered");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Transformation");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"/{Arguments.CryptoKey}\tThe file path that contains the key that will be used to decrypt the file");
+            Console.WriteLine();
+
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("Troubleshooting");
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine($"/{Arguments.Debug}\t\tDisplay all informations");
+            Console.WriteLine($"/{Arguments.Log}\t\tThe log file name");
+            Console.WriteLine($"/{Arguments.LogAge}\t\tThe number of log histories to keep (default=9)");
+
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         /// <summary>

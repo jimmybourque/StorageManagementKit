@@ -173,9 +173,9 @@ namespace StorageManagementKit.Copy
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Source");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"/{Arguments.Source}\t\t[{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}] Local drive directory, Google Cloud Storage");
-            Console.WriteLine($"/{Arguments.SourcePath}\tThe folder path, the GCS bucket name");
-            Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key if /{Arguments.Source} <> local");
+            Console.WriteLine($"/{Arguments.Source}\t\t[{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}] Local drive directory, Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.SourcePath}\tThe folder path, the bucket name");
+            Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key to access the bucket (if /{Arguments.Source} <> local)");
             Console.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -194,9 +194,9 @@ namespace StorageManagementKit.Copy
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Destination");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"/{Arguments.Dest}\t\t[{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}] Local drive directory, Google Cloud Storage");
-            Console.WriteLine($"/{Arguments.DestPath}\tThe folder path, the GCS bucket name");
-            Console.WriteLine($"/{Arguments.DestApiKey}\tThe file that contains the API key if /{Arguments.Dest} <> local");
+            Console.WriteLine($"/{Arguments.Dest}\t\t[{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}] Local drive directory, Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.DestPath}\tThe folder path, the bucket name");
+            Console.WriteLine($"/{Arguments.DestApiKey}\tThe file that contains the API key to access the bucket (if /{Arguments.Dest} <> local)");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine();
 

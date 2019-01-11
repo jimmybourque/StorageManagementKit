@@ -91,7 +91,7 @@ namespace StorageManagementKit.Core.Restoring
             {
                 using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_apiKey)))
                 {
-                    var gen = new GetObjectOptions() { Generation = version.Generation };
+                    var gen = new GetObjectOptions() { Generation = (long?)version.Generation };
 
                     var obj = _client.GetObject(_bucketName, version.Name, gen);
 
@@ -174,7 +174,7 @@ namespace StorageManagementKit.Core.Restoring
                     Helpers.WriteProgress(0);
 
                     _fileSize = (long)gcsObject.Size.GetValueOrDefault();
-                    client.DownloadObject(gcsObject, memStm, new DownloadObjectOptions() { Generation = version.Generation }, this);
+                    client.DownloadObject(gcsObject, memStm, new DownloadObjectOptions() { Generation = (long?)version.Generation }, this);
 
                     memStm.Position = 0;
                     fileObject.DataContent = memStm.ToArray();

@@ -322,6 +322,24 @@ namespace StorageManagementKit.Core {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed while getting object versions from S3.
+        /// </summary>
+        public static string S3Restore_GetVersionsException {
+            get {
+                return ResourceManager.GetString("S3Restore_GetVersionsException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Object &apos;{0}&apos; not found.
+        /// </summary>
+        public static string S3Restore_ObjectNotFound {
+            get {
+                return ResourceManager.GetString("S3Restore_ObjectNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while securing the file {0}.
         /// </summary>
         public static string SecureTransform_ProcessException {

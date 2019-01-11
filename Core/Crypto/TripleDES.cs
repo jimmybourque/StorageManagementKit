@@ -12,7 +12,7 @@ namespace StorageManagementKit.Core.Crypto
     public class TripleDES
     {
         private const string KEY_SPLIT_MARK = "A0B1C1";
-        private const string KEY_LINER = "---------JBOBACK-KEY---------";
+        private const string KEY_LINER = "---------SMK-KEY---------";
 
         private readonly TripleDESCryptoServiceProvider _des = new TripleDESCryptoServiceProvider();
         private readonly UTF8Encoding _utf8 = new UTF8Encoding();
@@ -47,7 +47,7 @@ namespace StorageManagementKit.Core.Crypto
             }
             catch (Exception ex)
             {
-                throw new SmkException($"securing {file} failed", ex);
+                throw new SmkCryptoException($"securing {file} failed", ex);
             }
         }
 
@@ -72,7 +72,7 @@ namespace StorageManagementKit.Core.Crypto
             }
             catch (Exception ex)
             {
-                throw new SmkException($"Unsecuring {encryptedFile} failed", ex);
+                throw new SmkCryptoException($"Unsecuring {encryptedFile} failed", ex);
             }
         }
 
@@ -145,21 +145,33 @@ namespace StorageManagementKit.Core.Crypto
                 return false;
             }
 
-            string[] lines = File.ReadAllText(keyfile).Replace(KEY_LINER, "").Split(KEY_SPLIT_MARK);
-
-            // The key must include the 'key' and the vector IV
-            if (lines.Length != 2)
+            try
             {
-                logger.WriteLog(ErrorCodes.TripleDES_InvalidKey,
-                    string.Format(ErrorResources.TripleDES_InvalidKey, keyfile),
-                    Severity.Error, VerboseLevel.User);
-                key = null;
-                iv = null;
-                return false;
-            }
+                string[] lines = File.ReadAllText(keyfile).Replace(KEY_LINER, "").Split(KEY_SPLIT_MARK);
 
-            key = Convert.FromBase64String(lines[0]);
-            iv = Convert.FromBase64String(lines[1]);
+                // The key must include the 'key' and the vector IV
+                if (lines.Length != 2)
+                {
+                    logger.WriteLog(ErrorCodes.TripleDES_InvalidKey,
+                        string.Format(ErrorResources.TripleDES_InvalidKey, keyfile),
+                        Severity.Error, VerboseLevel.User);
+                    key = null;
+                    iv = null;
+                    return false;
+                }
+
+                key = Convert.FromBase64String(lines[0]);
+                iv = Convert.FromBase64String(lines[1]);
+            }
+            catch (Exception ex)
+            {
+                throw new SmkCryptoException(
+                    $"Invalid key file '{keyfile}'{Environment.NewLine}{Environment.NewLine}" +
+                    $"Your file must be formatted as below (header and footer lines must be included):{Environment.NewLine}{Environment.NewLine}" +
+                    $"---------SMK-KEY---------{Environment.NewLine}" +
+                    $@"kMPgm9bKkSyBxN8l9aZaVrty4l333RGAA0FF34as4545CE1/g={Environment.NewLine}" +
+                    $"---------SMK-KEY---------", ex);
+            }
 
             return true;
         }

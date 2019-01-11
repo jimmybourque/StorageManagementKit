@@ -204,6 +204,12 @@
   <data name="S3BucketSource_MissingMetadata" xml:space="preserve">
     <value>Missing metadata for '{0}'</value>
   </data>
+  <data name="S3Restore_GetVersionsException" xml:space="preserve">
+    <value>Failed while getting object versions from S3</value>
+  </data>
+  <data name="S3Restore_ObjectNotFound" xml:space="preserve">
+    <value>Object '{0}' not found</value>
+  </data>
   <data name="SecureTransform_ProcessException" xml:space="preserve">
     <value>Error occured while securing the file {0}</value>
   </data>

@@ -10,6 +10,6 @@ namespace StorageManagementKit.Core.Restoring
         public string Name { get; set; }
         public string StorageClass { get; set; }
         public long Size { get; set; }
-        public long? Generation { get; set; }
+        public object Generation { get; set; }
     }
 }
