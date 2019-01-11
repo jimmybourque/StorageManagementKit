@@ -12,13 +12,17 @@ namespace StorageManagementKit.Core.Restoring
 {
     public class S3ObjectRestore : IObjectRestoring
     {
-        #region Properties
+        #region Members
         private string _bucketName;
         private string _keyFile;
         private byte[] _crypto_key;
         private byte[] _crypto_iv;
         private ILogging _logger;
         private AmazonS3Client _client;
+        #endregion
+
+        #region Properties
+        public string BucketName { get { return $"s3://{_bucketName}"; } }
         #endregion
 
         #region Constructor

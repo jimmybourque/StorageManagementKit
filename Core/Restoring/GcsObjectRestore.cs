@@ -12,13 +12,17 @@ namespace StorageManagementKit.Core.Restoring
 {
     public class GcsObjectRestore : IProgress<IDownloadProgress>, IObjectRestoring
     {
-        #region Properties
+        #region Members
         private long _fileSize;
         private string _bucketName;
         private string _apiKey;
         private byte[] _crypto_key;
         private byte[] _crypto_iv;
         private ILogging _logger;
+        #endregion
+
+        #region Properties
+        public string BucketName { get { return $"gs://{_bucketName}"; } }
         #endregion
 
         #region Constructor

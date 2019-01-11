@@ -163,7 +163,7 @@ namespace StorageManagementKit.Recover
             if (versions == null)
                 return;
 
-            DisplayList(versions, sourcePath, sourceFile);
+            DisplayList(restorer, versions, sourcePath, sourceFile);
 
             int choice = GetUserChoice(versions.Length);
             if (choice == -1)
@@ -173,8 +173,11 @@ namespace StorageManagementKit.Recover
             if (!restorer.Restore(versions[choice - 1], ref destFile))
                 return;
 
-            _logger.Write($"{destFile} successfully restored");
-            _logger.WriteLine();
+            _logger.WriteLine();            
+            Console.ForegroundColor = ConsoleColor.Gray;
+            _logger.Write("Restored file: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            _logger.WriteLine(destFile);
 
             DisplayFooter();
         }
@@ -211,16 +214,22 @@ namespace StorageManagementKit.Recover
         /// <summary>
         /// Displays the list of existing versions
         /// </summary>
-        private void DisplayList(ObjectVersion[] versions, string bucket, string filename)
+        private void DisplayList(IObjectRestoring restorer, ObjectVersion[] versions, string bucket, string filename)
         {
             Console.Clear();
             DisplayHeader(false);
 
             Console.ForegroundColor = ConsoleColor.Gray;
+            _logger.Write("Bucket: ");
+            Console.ForegroundColor = ConsoleColor.White;
+            _logger.WriteLine(restorer.BucketName);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
             _logger.Write("Object: ");
 
             Console.ForegroundColor = ConsoleColor.White;
-            _logger.WriteLine($"gs://{bucket}/{filename.Replace("\\", " / ")}");
+            _logger.WriteLine(filename.Replace("\\", "/"));
+
             _logger.WriteLine();
 
             Console.ForegroundColor = ConsoleColor.Gray;
