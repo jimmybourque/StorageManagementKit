@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core
+﻿namespace StorageManagementKit.Types
 {
     public static class Constants
     {

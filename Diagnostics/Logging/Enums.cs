@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core.Diagnostics
+﻿namespace StorageManagementKit.Diagnostics.Logging
 {
     public enum VerboseLevel
     {

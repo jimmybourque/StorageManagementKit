@@ -1,5 +1,5 @@
-﻿using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.IO;
+﻿using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.IO.FileSystem;
 
 namespace StorageManagementKit.Core.Copying.Destinations
 {

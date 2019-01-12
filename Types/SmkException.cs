@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StorageManagementKit.Core
+namespace StorageManagementKit.Types
 {
     [Serializable]
     public class SmkException : Exception

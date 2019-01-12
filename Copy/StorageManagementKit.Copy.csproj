@@ -9,13 +9,15 @@
     <RepositoryUrl>https://github.com/jimmybourque/StorageManagementKit.git</RepositoryUrl>
     <RepositoryType>GitHub</RepositoryType>
     <PackageProjectUrl>https://github.com/jimmybourque/StorageManagementKit</PackageProjectUrl>
-    <PackageLicenseUrl>GNU</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/jimmybourque/StorageManagementKit/blob/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <Copyright>GNU</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Core\StorageManagementKit.Core.csproj" />
+    <ProjectReference Include="..\Types\StorageManagementKit.Types.csproj" />
   </ItemGroup>
 
 </Project>

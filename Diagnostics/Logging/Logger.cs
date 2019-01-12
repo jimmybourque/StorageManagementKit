@@ -1,9 +1,10 @@
-﻿using System;
+﻿using StorageManagementKit.Types;
+using System;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 
-namespace StorageManagementKit.Core.Diagnostics
+namespace StorageManagementKit.Diagnostics.Logging
 {
     public class Logger : ILogging, IDisposable
     {

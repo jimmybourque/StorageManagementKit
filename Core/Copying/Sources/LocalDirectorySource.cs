@@ -1,9 +1,10 @@
 ﻿using StorageManagementKit.Core.Cleaning;
-using StorageManagementKit.Core.Crypto;
-using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.IO;
 using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.IO.FileSystem;
+using StorageManagementKit.Security.Crypto;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Text;

@@ -1,6 +1,7 @@
 ﻿using StorageManagementKit.Core.Copying;
-using StorageManagementKit.Core.Crypto;
-using StorageManagementKit.Core.Diagnostics;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Security.Crypto;
+using StorageManagementKit.Types;
 using System;
 
 namespace StorageManagementKit.Core.Transforms

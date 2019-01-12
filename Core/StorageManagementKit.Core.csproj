@@ -2,6 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>Jimmy Bourque, Canada, Quebec</Authors>
+    <Product>Storage Management Kit - Core Library</Product>
+    <PackageProjectUrl>https://github.com/jimmybourque/StorageManagementKit</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/jimmybourque/StorageManagementKit/blob/master/LICENSE</PackageLicenseUrl>
+    <RepositoryUrl>https://github.com/jimmybourque/StorageManagementKit.git</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <Copyright>GNU</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -11,18 +18,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="ErrorResources.Designer.cs">
-      <DesignTime>True</DesignTime>
-      <AutoGen>True</AutoGen>
-      <DependentUpon>ErrorResources.resx</DependentUpon>
-    </Compile>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Update="ErrorResources.resx">
-      <Generator>PublicResXFileCodeGenerator</Generator>
-      <LastGenOutput>ErrorResources.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
+    <ProjectReference Include="..\Diagnostics\StorageManagementKit.Diagnostics.csproj" />
+    <ProjectReference Include="..\IO\StorageManagementKit.IO.csproj" />
+    <ProjectReference Include="..\Security\StorageManagementKit.Security.csproj" />
   </ItemGroup>
 
 </Project>

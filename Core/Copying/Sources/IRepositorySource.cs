@@ -1,6 +1,6 @@
-﻿using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.Copying.Destinations;
+﻿using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Diagnostics.Logging;
 
 namespace StorageManagementKit.Core.Copying.Sources
 {

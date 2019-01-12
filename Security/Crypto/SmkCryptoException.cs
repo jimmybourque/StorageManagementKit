@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace StorageManagementKit.Core.Crypto
+namespace StorageManagementKit.Security.Crypto
 {
     [Serializable]
     public class SmkCryptoException : Exception

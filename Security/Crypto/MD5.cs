@@ -1,11 +1,12 @@
-﻿using StorageManagementKit.Core.Diagnostics;
+﻿using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace StorageManagementKit.Core.Crypto
+namespace StorageManagementKit.Security.Crypto
 {
     public static class MD5
     {

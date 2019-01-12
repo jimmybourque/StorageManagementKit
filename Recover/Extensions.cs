@@ -1,5 +1,6 @@
 ﻿using StorageManagementKit.Core;
 using StorageManagementKit.Core.Restoring;
+using StorageManagementKit.Types;
 using System;
 
 namespace StorageManagementKit.Recover

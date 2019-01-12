@@ -1,9 +1,10 @@
 ﻿using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
-using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.IO;
 using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.IO.FileSystem;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Linq;

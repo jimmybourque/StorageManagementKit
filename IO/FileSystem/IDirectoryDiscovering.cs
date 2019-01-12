@@ -1,6 +1,6 @@
 ﻿using System.IO;
 
-namespace StorageManagementKit.Core.IO
+namespace StorageManagementKit.IO.FileSystem
 {
     public interface IDirectoryDiscovering
     {

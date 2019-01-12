@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace StorageManagementKit.Core {
+namespace StorageManagementKit.Types {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace StorageManagementKit.Core {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StorageManagementKit.Core.ErrorResources", typeof(ErrorResources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("StorageManagementKit.Types.ErrorResources", typeof(ErrorResources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;

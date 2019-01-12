@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace StorageManagementKit.Core.IO
+namespace StorageManagementKit.IO.FileSystem
 {
     public enum ObjectKind
     {

@@ -1,8 +1,9 @@
 ﻿using Amazon.S3;
 using Amazon.S3.Model;
 using StorageManagementKit.Core.AWS;
-using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.IO;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.IO.FileSystem;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Linq;

@@ -1,4 +1,4 @@
-﻿namespace StorageManagementKit.Core.Crypto
+﻿namespace StorageManagementKit.Security.Crypto
 {
     public enum MD5Kind
     {

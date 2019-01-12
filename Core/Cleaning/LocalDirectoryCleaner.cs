@@ -1,5 +1,6 @@
-﻿using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.IO;
+﻿using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.IO.FileSystem;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 

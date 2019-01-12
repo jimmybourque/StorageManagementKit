@@ -1,4 +1,4 @@
-﻿using StorageManagementKit.Core;
+﻿using StorageManagementKit.Types;
 using System;
 using System.Linq;
 using System.Reflection;

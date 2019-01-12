@@ -1,10 +1,12 @@
-﻿using StorageManagementKit.Core.Diagnostics;
+﻿using StorageManagementKit.Core;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace StorageManagementKit.Core.Crypto
+namespace StorageManagementKit.Security.Crypto
 {
     /// <summary>
     /// Encrypt/decrypt files with a 3-DES algorithm

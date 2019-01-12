@@ -2,8 +2,9 @@
 using Google.Apis.Download;
 using Google.Cloud.Storage.V1;
 using StorageManagementKit.Core.Copying;
-using StorageManagementKit.Core.Diagnostics;
 using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Linq;

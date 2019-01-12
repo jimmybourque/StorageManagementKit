@@ -1,11 +1,12 @@
-﻿using StorageManagementKit.Core.Diagnostics;
+﻿using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Types;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace StorageManagementKit.Core.IO
+namespace StorageManagementKit.IO.FileSystem
 {
     public class DirectoryDiscover
     {

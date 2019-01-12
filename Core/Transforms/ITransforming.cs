@@ -1,5 +1,5 @@
 ﻿using StorageManagementKit.Core.Copying;
-using StorageManagementKit.Core.Diagnostics;
+using StorageManagementKit.Diagnostics.Logging;
 
 namespace StorageManagementKit.Core.Transforms
 {

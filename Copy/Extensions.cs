@@ -1,7 +1,7 @@
-﻿using StorageManagementKit.Core;
-using StorageManagementKit.Core.Copying.Destinations;
+﻿using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Copying.Sources;
 using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Types;
 using System;
 
 namespace StorageManagementKit.Copy

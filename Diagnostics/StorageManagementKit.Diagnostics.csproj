@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Authors>Jimmy Bourque, Canada, Quebec</Authors>
+    <Product>Storage Management Kit - Diagnostics Library</Product>
+    <Copyright>GNU</Copyright>
+    <PackageLicenseUrl>https://github.com/jimmybourque/StorageManagementKit/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/jimmybourque/StorageManagementKit</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/jimmybourque/StorageManagementKit.git</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Types\StorageManagementKit.Types.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,6 @@
-﻿using StorageManagementKit.Core.Diagnostics;
-using StorageManagementKit.Core.Transforms;
+﻿using StorageManagementKit.Core.Transforms;
+using StorageManagementKit.Diagnostics.Logging;
+using StorageManagementKit.Types;
 using System;
 
 namespace StorageManagementKit.Core.Copying.Destinations
