@@ -81,36 +81,9 @@ namespace SmkCopy
             else if (!ConsoleHelpers.AllCommandExist(_arguments, typeof(Arguments)))
                 return;
 
-            // Proceed a cleanup of the folder .smk-meta
-            else if (ConsoleHelpers.CommandArgExists(_arguments, Arguments.RemoveArtifacts))
-                CleanArtefacts();
-
             // Run a backup
             else
                 Backup();
-        }
-
-        /// <summary>
-        /// Delete all unused files into the .smk-hive directory
-        /// </summary>
-        private void CleanArtefacts()
-        {
-            DisplayHeader();
-
-            _logger.WriteLine("Cleaning started...");
-
-            if (!ConsoleHelpers.CommandArgExists(_arguments, Arguments.SourcePath))
-            {
-                _logger.WriteError($"Missing argument {Arguments.SourcePath}");
-                return;
-            }
-
-            bool wideDisplay = ConsoleHelpers.CommandArgExists(_arguments, Arguments.Wide);
-
-            string path = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourcePath);
-            new LocalDirectoryCleaner(path, _logger, this, wideDisplay).Process();
-
-            DisplayFooter();
         }
 
         /// <summary>
@@ -201,10 +174,9 @@ namespace SmkCopy
             Console.WriteLine($"/{Arguments.Wide}\t\tDisplay the full path of each object");
             Console.WriteLine($"/{Arguments.Log}\t\tThe log file name");
             Console.WriteLine($"/{Arguments.LogAge}\t\tThe number of log histories to keep (default=9)");
-            Console.WriteLine($"/{Arguments.RemoveArtifacts}\tClean obsolete files into the local repository folder '{Constants.Hive}' define by the argument /{Arguments.SourcePath}");
 
             Console.WriteLine();
-                     
+
 
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Examples");

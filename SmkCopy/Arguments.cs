@@ -16,6 +16,5 @@
         public const string Wide = "Wide";
         public const string Check = "Check";
         public const string NoCleaning = "NoCleaning";
-        public const string RemoveArtifacts = "RemArtifacts";
     }
 }
