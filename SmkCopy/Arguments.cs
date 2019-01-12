@@ -1,4 +1,4 @@
-﻿namespace Copy
+﻿namespace SmkCopy
 {
     public static class Arguments
     {

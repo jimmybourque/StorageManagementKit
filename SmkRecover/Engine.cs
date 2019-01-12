@@ -5,7 +5,7 @@ using StorageManagementKit.Types;
 using System;
 using System.Linq;
 
-namespace Recover
+namespace SmkRecover
 {
     public class Engine
     {

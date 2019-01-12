@@ -3,7 +3,7 @@ using System;
 using System.Linq;
 using System.Reflection;
 
-namespace Copy
+namespace SmkCopy
 {
     class Program
     {

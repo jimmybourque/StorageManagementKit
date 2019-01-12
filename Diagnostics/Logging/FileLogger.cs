@@ -6,7 +6,7 @@ using System.Reflection;
 
 namespace StorageManagementKit.Diagnostics.Logging
 {
-    public class Logger : ILogging, IDisposable
+    public class FileLogger : ILogging, IDisposable
     {
         #region Members
         private StreamWriter _logWriter = null;
@@ -22,7 +22,7 @@ namespace StorageManagementKit.Diagnostics.Logging
         #endregion
 
         #region Constructor
-        public Logger(string filename, int age, VerboseLevel level)
+        public FileLogger(string filename, int age, VerboseLevel level)
         {
             _logfile = filename;
             _age = age;
@@ -32,7 +32,7 @@ namespace StorageManagementKit.Diagnostics.Logging
             ExpireLogs();
         }
 
-        ~Logger()
+        ~FileLogger()
         {
             Dispose();
         }

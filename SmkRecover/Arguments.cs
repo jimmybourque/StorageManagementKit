@@ -1,4 +1,4 @@
-﻿namespace Recover
+﻿namespace SmkRecover
 {
     public class Arguments
     {

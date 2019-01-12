@@ -4,12 +4,11 @@ using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Copying.Sources;
 using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Diagnostics.Logging;
-using StorageManagementKit.Security.Crypto;
 using StorageManagementKit.Types;
 using System;
 using System.Linq;
 
-namespace Copy
+namespace SmkCopy
 {
     public class Engine : IProgressing, IDisposable
     {

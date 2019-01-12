@@ -4,7 +4,7 @@ using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Types;
 using System;
 
-namespace Copy
+namespace SmkCopy
 {
     public static class Extensions
     {

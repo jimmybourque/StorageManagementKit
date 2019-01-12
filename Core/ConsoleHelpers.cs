@@ -18,7 +18,7 @@ namespace StorageManagementKit.Core
 
             fields.ToList().ForEach(f => names.Add(f.GetValue(null).ToString().ToLower()));
 
-            List<string> arg2 = arguments.ToList().GetRange(0, arguments.Length - 1);
+            List<string> arg2 = arguments.ToList(); //.GetRange(0, arguments.Length - 1);
             var errors = arg2.Where(a => !names.Any(n => n.Equals(GetCommandName(a.ToLower())))).ToList();
 
             if (errors.Count > 0)

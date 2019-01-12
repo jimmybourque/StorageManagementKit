@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <Company>d</Company>
+    <Authors>Jimmy Bourque, Canada, Quebec</Authors>
+    <Product>Storage Management Kit - Recover</Product>
+    <RepositoryUrl>https://github.com/jimmybourque/StorageManagementKit.git</RepositoryUrl>
+    <RepositoryType>GitHub</RepositoryType>
+    <PackageProjectUrl>https://github.com/jimmybourque/StorageManagementKit</PackageProjectUrl>
+    <Copyright>GNU</Copyright>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/jimmybourque/StorageManagementKit/blob/master/LICENSE</PackageLicenseUrl>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\StorageManagementKit.Core.csproj" />
+    <ProjectReference Include="..\Types\StorageManagementKit.Types.csproj" />
+  </ItemGroup>
+
+</Project>

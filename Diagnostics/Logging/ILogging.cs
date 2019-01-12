@@ -1,4 +1,6 @@
-﻿namespace StorageManagementKit.Diagnostics.Logging
+﻿using System;
+
+namespace StorageManagementKit.Diagnostics.Logging
 {
     public enum Severity
     {
@@ -7,12 +9,14 @@
         Error = 2
     }
 
-    public interface ILogging
+    public interface ILogging : IDisposable
     {
         string LogFile { get; }
+        bool LastPrintedStats { get; set; }
         void WriteLog(int code, string message, Severity severity, VerboseLevel level, bool highlight = false);
         void WriteLine();
         void WriteLine(string text);
         void Write(string text);
+        void WriteError(string text);
     }
 }
