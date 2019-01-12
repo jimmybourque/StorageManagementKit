@@ -8,8 +8,7 @@ To compile the source code, you must install .Net Core 2.1
 
 ## Architecture
 
-![GCP](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServiceLogo-GCP.png)
-![S3](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServiceLogo-S3.png)
+![GCP](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServicesLogo.png)
 
 The "Copy" utility has a flexible architecture :
 
