@@ -4,6 +4,8 @@ The storage software kit is a multi cloud integration solution to allow you to m
 
 The kit integrates cloud services of _Google Cloud Bucket Storage (GCS)_ and _Amazon Bucket Storage (S3)_. The organic architecture allows you to add a non supported yet of source or destination.
 
+"_This is my personal backup solution that I use at home_" - Jimmy Bourque
+
 To compile the source code, you must install .Net Core 2.1
 
 ## Integrations
