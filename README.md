@@ -1,6 +1,6 @@
 ## Storage Management Kit
 
-The storage software kit allows you to move the content between many file storage. It can recover specific file from the an encrypted backup. The kit is designed to ensure a secure way to manage your backup. You keep the encryption key on your side; never in the cloud. Your files are never sent to a cloud service without being encrypted.
+The storage software kit is a multi cloud integration solution to allow you to move the content between many file storage. It can recover specific file from the an encrypted backup. The kit is designed to ensure a secure way to manage your backup. You keep the encryption key on your side; never in the cloud. Your files are never sent to a cloud service without being encrypted.
 
 The kit integrates cloud services of _Google Cloud Bucket Storage (GCS)_ and _Amazon Bucket Storage (S3)_. The organic architecture allows you to add a non supported yet of source or destination.
 
