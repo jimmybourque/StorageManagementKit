@@ -6,10 +6,11 @@ The kit integrates cloud services of _Google Cloud Bucket Storage (GCS)_ and _Am
 
 To compile the source code, you must install .Net Core 2.1
 
-## Architecture
+## Integrations
 
-![GCP](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServiceLogo-GCP.png)
-![S3](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServiceLogo-S3.png)
+![GCP](https://github.com/jimmybourque/StorageManagementKit/blob/master/Doc/Images/CloudServicesLogo.png)
+
+## Architecture
 
 The "Copy" utility has a flexible architecture :
 
