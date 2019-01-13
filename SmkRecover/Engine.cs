@@ -84,7 +84,7 @@ namespace SmkRecover
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Source");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"/{Arguments.Source}\t\t[{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}] Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.Source}\t\tGoogle Cloud Storage [{RestoringRepositorySource.GCS}], Amazon [{RestoringRepositorySource.S3}] or Azure Blob Storage [{RestoringRepositorySource.ABS}]");
             Console.WriteLine($"/{Arguments.SourcePath}\tThe bucket name");
             Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key. Used to decrypt the file");
             Console.WriteLine($"/{Arguments.SourceFile}\tThe bucket object key name; include the path with the filename");

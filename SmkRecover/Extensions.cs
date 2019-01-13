@@ -16,8 +16,10 @@ namespace SmkRecover
                 return RestoringRepositorySource.GCS;
             else if (value.ToLower() == RestoringRepositorySource.S3.ToString().ToLower())
                 return RestoringRepositorySource.S3;
+            else if (value.ToLower() == RestoringRepositorySource.ABS.ToString().ToLower())
+                return RestoringRepositorySource.ABS;
 
-            throw new SmkException($"Supported sources are [{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}]");
+            throw new SmkException($"Supported sources are [{RestoringRepositorySource.GCS}|{RestoringRepositorySource.S3}|[{RestoringRepositorySource.ABS}]");
         }
     }
 }

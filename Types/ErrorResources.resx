@@ -117,6 +117,21 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AzureBlobsDestination_DeleteException" xml:space="preserve">
+    <value>Error occured while deleting the blob '{0}'</value>
+  </data>
+  <data name="AzureBlobsDestination_GettingListException" xml:space="preserve">
+    <value>Error while getting object list from Azure Blobs</value>
+  </data>
+  <data name="AzureBlobsDestination_GettingObjectList" xml:space="preserve">
+    <value>Getting object list from Azure...</value>
+  </data>
+  <data name="AzureBlobsDestination_IsMetadataMatchException" xml:space="preserve">
+    <value>Error occured while getting the metadata of '{0}'</value>
+  </data>
+  <data name="AzureBlobsDestination_UnsecuredNotSupported" xml:space="preserve">
+    <value>Only a secured transformation is supported</value>
+  </data>
   <data name="DirectoryDiscover_GettingFileList" xml:space="preserve">
     <value>Getting file list..</value>
   </data>
@@ -145,7 +160,7 @@
     <value>Error while getting object list from GCS Bucket</value>
   </data>
   <data name="GcsBucketDestination_GettingObjectList" xml:space="preserve">
-    <value>Getting object list..</value>
+    <value>Getting object list from Google...</value>
   </data>
   <data name="GcsBucketDestination_UnsecuredNotSupported" xml:space="preserve">
     <value>Only a secured transformation is supported</value>
@@ -154,7 +169,7 @@
     <value>Downloading object '{0}' failed</value>
   </data>
   <data name="GcsBucketSource_GettingObjectList" xml:space="preserve">
-    <value>Getting object list..</value>
+    <value>Getting object list from Google...</value>
   </data>
   <data name="GcsBucketSource_MissingMetadata" xml:space="preserve">
     <value>Missing metadata for '{0}'</value>
@@ -190,7 +205,7 @@
     <value>Error while getting object list from S3 Bucket</value>
   </data>
   <data name="S3BucketDestination_GettingObjectList" xml:space="preserve">
-    <value>Getting object list..</value>
+    <value>Getting object list from Amazon...</value>
   </data>
   <data name="S3BucketDestination_UnsecuredNotSupported" xml:space="preserve">
     <value>Only a secured transformation is supported</value>
@@ -199,7 +214,7 @@
     <value>Downloading object '{0}' failed</value>
   </data>
   <data name="S3BucketSource_GettingObjectList" xml:space="preserve">
-    <value>Getting object list..</value>
+    <value>Getting object list from Amazon...</value>
   </data>
   <data name="S3BucketSource_MissingMetadata" xml:space="preserve">
     <value>Missing metadata for '{0}'</value>

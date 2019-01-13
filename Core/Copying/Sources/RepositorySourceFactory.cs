@@ -62,6 +62,15 @@ namespace StorageManagementKit.Core.Copying.Sources
                         break;
                     }
 
+                case SourceRepository.ABS:
+                    {
+                        Helpers.MandatoryValue("source path", srcSettings.Path);
+                        Helpers.MandatoryValue("source api key filename", srcSettings.ApiKey);
+
+                        source = new AbsSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
+                        break;
+                    }
+
                 default:
                     throw new SmkException($"Unsupported repository source '{srcSettings.Repository}");
             }

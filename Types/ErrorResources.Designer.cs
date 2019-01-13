@@ -61,6 +61,51 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Error occured while deleting the blob &apos;{0}&apos;.
+        /// </summary>
+        public static string AzureBlobsDestination_DeleteException {
+            get {
+                return ResourceManager.GetString("AzureBlobsDestination_DeleteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error while getting object list from Azure Blobs.
+        /// </summary>
+        public static string AzureBlobsDestination_GettingListException {
+            get {
+                return ResourceManager.GetString("AzureBlobsDestination_GettingListException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting object list from Azure....
+        /// </summary>
+        public static string AzureBlobsDestination_GettingObjectList {
+            get {
+                return ResourceManager.GetString("AzureBlobsDestination_GettingObjectList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while getting the metadata of &apos;{0}&apos;.
+        /// </summary>
+        public static string AzureBlobsDestination_IsMetadataMatchException {
+            get {
+                return ResourceManager.GetString("AzureBlobsDestination_IsMetadataMatchException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Only a secured transformation is supported.
+        /// </summary>
+        public static string AzureBlobsDestination_UnsecuredNotSupported {
+            get {
+                return ResourceManager.GetString("AzureBlobsDestination_UnsecuredNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting file list...
         /// </summary>
         public static string DirectoryDiscover_GettingFileList {
@@ -142,7 +187,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting object list...
+        ///   Looks up a localized string similar to Getting object list from Google....
         /// </summary>
         public static string GcsBucketDestination_GettingObjectList {
             get {
@@ -169,7 +214,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting object list...
+        ///   Looks up a localized string similar to Getting object list from Google....
         /// </summary>
         public static string GcsBucketSource_GettingObjectList {
             get {
@@ -277,7 +322,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting object list...
+        ///   Looks up a localized string similar to Getting object list from Amazon....
         /// </summary>
         public static string S3BucketDestination_GettingObjectList {
             get {
@@ -304,7 +349,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Getting object list...
+        ///   Looks up a localized string similar to Getting object list from Amazon....
         /// </summary>
         public static string S3BucketSource_GettingObjectList {
             get {

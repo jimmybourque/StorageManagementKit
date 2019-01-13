@@ -34,8 +34,10 @@ namespace SmkCopy
                 return SourceRepository.GCS;
             else if (value.ToLower() == SourceRepository.S3.ToString().ToLower())
                 return SourceRepository.S3;
+            else if (value.ToLower() == SourceRepository.ABS.ToString().ToLower())
+                return SourceRepository.ABS;
 
-            throw new SmkException($"Supported sources are [{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}]");
+            throw new SmkException($"Supported sources are [{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}|{SourceRepository.ABS}]");
         }
 
         public static DestinationRepository ConvertToDestinationRepository(this string value)
@@ -49,8 +51,10 @@ namespace SmkCopy
                 return DestinationRepository.GCS;
             else if (value.ToLower() == DestinationRepository.S3.ToString().ToLower())
                 return DestinationRepository.S3;
+            else if (value.ToLower() == DestinationRepository.ABS.ToString().ToLower())
+                return DestinationRepository.ABS;
 
-            throw new SmkException($"Supported destinations are [{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}]");
+            throw new SmkException($"Supported destinations are [{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}|{DestinationRepository.ABS}]");
         }
 
         public static TransformKind ConvertToTransformKind(this string value)

@@ -133,7 +133,7 @@ namespace SmkCopy
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Source");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"/{Arguments.Source}\t\t[{SourceRepository.Local}|{SourceRepository.GCS}|{SourceRepository.S3}] Local drive directory, Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.Source}\t\tLocal directory [{SourceRepository.Local}], Google Cloud Storage [{SourceRepository.GCS}], Amazon [{SourceRepository.S3}] or Azure Blob Storage [{SourceRepository.ABS}]");
             Console.WriteLine($"/{Arguments.SourcePath}\tThe folder path, the bucket name");
             Console.WriteLine($"/{Arguments.SourceApiKey}\tThe file that contains the API key to access the bucket (if /{Arguments.Source} <> local)");
             Console.WriteLine();
@@ -154,7 +154,7 @@ namespace SmkCopy
             Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine("Destination");
             Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine($"/{Arguments.Dest}\t\t[{DestinationRepository.Local}|{DestinationRepository.GCS}|{DestinationRepository.S3}] Local drive directory, Google Cloud Storage or Amazon");
+            Console.WriteLine($"/{Arguments.Dest}\t\tLocal directory [{SourceRepository.Local}], Google Cloud Storage [{SourceRepository.GCS}], Amazon [{SourceRepository.S3}] or Azure Blob Storage [{SourceRepository.ABS}]");
             Console.WriteLine($"/{Arguments.DestPath}\tThe folder path, the bucket name");
             Console.WriteLine($"/{Arguments.DestApiKey}\tThe file that contains the API key to access the bucket (if /{Arguments.Dest} <> local)");
             Console.ForegroundColor = ConsoleColor.Gray;

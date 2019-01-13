@@ -3,8 +3,18 @@
     public enum SourceRepository
     {
         Local,
+        /// <summary>
+        /// Google Cloud Storage
+        /// </summary>
         GCS,
-        S3
+        /// <summary>
+        /// Amazon S3
+        /// </summary>
+        S3,
+        /// <summary>
+        /// Azure Blob Storage
+        /// </summary>
+        ABS
     }
 
     public enum CheckLevel

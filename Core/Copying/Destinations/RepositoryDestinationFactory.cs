@@ -59,6 +59,16 @@ namespace StorageManagementKit.Core.Copying.Destinations
                         return dest;
                     }
 
+                case DestinationRepository.ABS:
+                    {
+                        Helpers.MandatoryValue("destination", settings.Path);
+                        Helpers.MandatoryValue("destination api key filename", settings.ApiKey);
+
+                        AbsDestination dest = new AbsDestination(settings.Path, settings.ApiKey);
+                        dest.Logger = _logger;
+                        return dest;
+                    }
+
                 default:
                     throw new SmkException($"Unsupported repository destination '{settings.Repository}");
             }

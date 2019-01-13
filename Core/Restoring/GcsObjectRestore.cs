@@ -75,7 +75,9 @@ namespace StorageManagementKit.Core.Restoring
                             StorageClass = item.StorageClass,
                             Size = (long)item.Size.GetValueOrDefault(),
                             VersionId = item.Generation
-                        }).ToArray();
+                        })
+                        .OrderByDescending(a => a.TimeCreated)
+                        .ToArray();
                 }
             }
             catch (Exception ex)
