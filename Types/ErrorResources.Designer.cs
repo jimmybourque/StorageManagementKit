@@ -70,6 +70,15 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to delete the blob &apos;{0}&apos;.
+        /// </summary>
+        public static string AbsContainerDestination_DeleteFailed {
+            get {
+                return ResourceManager.GetString("AbsContainerDestination_DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error while getting object list from Azure Blobs.
         /// </summary>
         public static string AbsContainerDestination_GettingListException {
@@ -102,6 +111,60 @@ namespace StorageManagementKit.Types {
         public static string AbsContainerDestination_UnsecuredNotSupported {
             get {
                 return ResourceManager.GetString("AbsContainerDestination_UnsecuredNotSupported", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while deleting the blob object &apos;{0}&apos;.
+        /// </summary>
+        public static string AbsContainerSource_DeleteException {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_DeleteException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to delete the blob &apos;{0}&apos;.
+        /// </summary>
+        public static string AbsContainerSource_DeleteFailed {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_DeleteFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Downloading blob &apos;{0}&apos; failed.
+        /// </summary>
+        public static string AbsContainerSource_DownloadingError {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_DownloadingError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Getting object list from Azure....
+        /// </summary>
+        public static string AbsContainerSource_GettingObjectList {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_GettingObjectList", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
+        /// </summary>
+        public static string AbsContainerSource_MissingMetadata {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_MissingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error occured while verifying if the blob object &apos;{0}&apos; exists.
+        /// </summary>
+        public static string AbsContainerSource_ObjectExists {
+            get {
+                return ResourceManager.GetString("AbsContainerSource_ObjectExists", resourceCulture);
             }
         }
         

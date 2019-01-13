@@ -222,7 +222,7 @@ namespace StorageManagementKit.Core.Copying.Sources
 
             string displayName = Helpers.FormatDisplayFileName(_wideDisplay, $"\\{originalName}");
 
-            Logger.WriteLog(ErrorCodes.LocalDirectorySource_FileProcessing,
+            Logger.WriteLog(ErrorCodes.GcsBucketSource_FileProcessing,
                 $">> Processing {displayName}", Severity.Information, VerboseLevel.Debug);
 
             string originalMD5, metadataMD5, metadataEncrypted;

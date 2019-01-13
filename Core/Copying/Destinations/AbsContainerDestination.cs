@@ -40,6 +40,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
             _containerName = containerName.ToLower(); // Container names must be lowercase with Azure
 
+            // Initialize Azure client instances
             if (!CloudStorageAccount.TryParse(File.ReadAllText(keyFile), out _cloudStorage))
                 throw new SmkException("Invalid Azure Access Key");
 
@@ -72,6 +73,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
                 CloudBlockBlob blob = _blobContainer.GetBlockBlobReference(destDataFile);
 
+                // Removes the "." because Azure does not accept this char
                 blob.Metadata.Add(Constants.MetadataEncryptedKey.Replace(".", ""), fo.MetadataContent);
                 blob.Metadata.Add(Constants.MetadataMD5Key, fo.MetadataMD5);
                 blob.Metadata.Add(Constants.OriginalMD5Key, fo.Metadata.OriginalMD5);
@@ -111,11 +113,11 @@ namespace StorageManagementKit.Core.Copying.Destinations
                     task.Wait();
 
                     blobContinuationToken = task.Result.ContinuationToken;
-                    foreach (IListBlobItem item in task.Result.Results)
+                    foreach (IListBlobItem blob in task.Result.Results)
                     {
-                        if (item is CloudBlockBlob)
+                        if (blob is CloudBlockBlob)
                         {
-                            string path = $"\\{ ((CloudBlockBlob)item).Name}".Replace("/", "\\");
+                            string path = $"\\{ ((CloudBlockBlob)blob).Name}".Replace("/", "\\");
 
                             list.Add(new DiscoveredObject()
                             {
@@ -147,10 +149,17 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
             try
             {
-                var blob = _blobContainer.GetBlockBlobReference(file);
-                blob.DeleteIfExistsAsync();
-
                 string displayName = Helpers.FormatDisplayFileName(wideDisplay, file);
+
+                var blob = _blobContainer.GetBlockBlobReference(file);
+
+                if (!blob.DeleteIfExistsAsync().Result)
+                {
+                    Logger.WriteLog(ErrorCodes.AbsContainerDestination_DeleteFailed,
+                            string.Format(ErrorResources.AbsContainerDestination_DeleteFailed, displayName),
+                            Severity.Error, VerboseLevel.User);
+                    return false;
+                }
 
                 Logger.WriteLog(ErrorCodes.AbsContainerDestination_FileDeleted,
                     $"del dst {displayName}", Severity.Information, VerboseLevel.User);
@@ -162,7 +171,6 @@ namespace StorageManagementKit.Core.Copying.Destinations
                 Logger.WriteLog(ErrorCodes.AbsContainerDestination_DeleteException,
                     string.Format(ErrorResources.AbsContainerDestination_DeleteException, file),
                     Severity.Error, VerboseLevel.User);
-
                 throw;
             }
         }
@@ -181,7 +189,6 @@ namespace StorageManagementKit.Core.Copying.Destinations
             {
                 var task = _blobContainer.ListBlobsSegmentedAsync(
                     destDataFile, true, BlobListingDetails.Metadata, null, null, null, null);
-
                 task.Wait();
 
                 // The object must be unique
@@ -205,7 +212,6 @@ namespace StorageManagementKit.Core.Copying.Destinations
                 Logger.WriteLog(ErrorCodes.AbsContainerDestination_IsMetadataMatchException,
                     string.Format(ErrorResources.AbsContainerDestination_IsMetadataMatchException, fullpath),
                     Severity.Error, VerboseLevel.User);
-
                 throw;
             }
         }

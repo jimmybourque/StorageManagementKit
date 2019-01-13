@@ -74,5 +74,15 @@
         public const int AbsContainerDestination_GettingObjectList = 277;
         public const int AbsContainerDestination_FileDeleted = 278;
         public const int AbsContainerDestination_DeleteException = 279;
+        public const int AbsContainerDestination_DeleteFailed = 280;
+        public const int AbsContainerSource_DeleteFailed = 281;
+        public const int AbsContainerSource_DeleteException = 282;
+        public const int AbsContainerSource_ObjectExists = 283;
+        public const int GcsBucketSource_FileProcessing = 284;
+        public const int AbsContainerSource_FileProcessing = 285;
+        public const int AbsContainerSource_GettingObjectList = 286;
+        public const int AbsContainerSource_MissingMetadata = 287;
+        public const int AbsContainerSource_IgnoredFile = 288;
+        public const int AbsContainerSource_SyncFile = 289;
     }
 }

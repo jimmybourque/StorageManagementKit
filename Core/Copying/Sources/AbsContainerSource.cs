@@ -1,5 +1,5 @@
-﻿using Google.Apis.Auth.OAuth2;
-using Google.Cloud.Storage.V1;
+﻿using Microsoft.WindowsAzure.Storage;
+using Microsoft.WindowsAzure.Storage.Blob;
 using StorageManagementKit.Core.Copying.Destinations;
 using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Diagnostics.Logging;
@@ -26,7 +26,9 @@ namespace StorageManagementKit.Core.Copying.Sources
         private int _fileScanned = 0;
         private int _fileSynchronized = 0;
         private bool _wideDisplay;
-        private StorageClient _client;
+        private CloudStorageAccount _cloudStorage;
+        private CloudBlobClient _blobClient;
+        private CloudBlobContainer _blobContainer;
         #endregion
 
         #region Properties
@@ -52,7 +54,13 @@ namespace StorageManagementKit.Core.Copying.Sources
 
             _containerName = containerName;
             _wideDisplay = wideDisplay;
-            _client = StorageClient.Create(GoogleCredential.FromFile(keyFile));
+
+            // Initialize Azure client instances
+            if (!CloudStorageAccount.TryParse(File.ReadAllText(keyFile), out _cloudStorage))
+                throw new SmkException("Invalid Azure Access Key");
+
+            _blobClient = _cloudStorage.CreateCloudBlobClient();
+            _blobContainer = _blobClient.GetContainerReference(_containerName);
         }
         #endregion
 
@@ -106,15 +114,24 @@ namespace StorageManagementKit.Core.Copying.Sources
         {
             try
             {
-                _client.DeleteObject(_containerName, objectName.ToLower());
+                var blob = _blobContainer.GetBlockBlobReference(objectName.ToLower());
+
+                if (!blob.DeleteIfExistsAsync().Result)
+                {
+                    Logger.WriteLog(ErrorCodes.AbsContainerSource_DeleteFailed,
+                            string.Format(ErrorResources.AbsContainerSource_DeleteFailed, objectName),
+                            Severity.Error, VerboseLevel.User);
+                    return false;
+                }
+
                 return true;
             }
-            catch (Google.GoogleApiException ex)
+            catch
             {
-                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
-                    return false;
-                else
-                    throw;
+                Logger.WriteLog(ErrorCodes.AbsContainerSource_DeleteException,
+                        string.Format(ErrorResources.AbsContainerSource_DeleteException, objectName),
+                        Severity.Error, VerboseLevel.User);
+                throw;
             }
         }
 
@@ -132,16 +149,19 @@ namespace StorageManagementKit.Core.Copying.Sources
                 if (objectName.StartsWith("/") || objectName.StartsWith("\\"))
                     objectName = objectName.Substring(1, objectName.Length - 1);
 
-                objectName = objectName.Replace("\\", "/");
+                objectName = objectName.Replace("\\", "/").ToLower();
 
-                return _client.GetObject(_containerName, objectName.ToLower()) != null;
+                var task = _blobContainer.ListBlobsSegmentedAsync(objectName, true, BlobListingDetails.None, null, null, null, null);
+                task.Wait();
+
+                return (task.Result.Results.Count() == 1) && (task.Result.Results.ToList()[0] is CloudBlockBlob);
             }
-            catch (Google.GoogleApiException ex)
+            catch
             {
-                if (ex.HttpStatusCode == System.Net.HttpStatusCode.NotFound)
-                    return false;
-                else
-                    throw;
+                Logger.WriteLog(ErrorCodes.AbsContainerSource_ObjectExists,
+                        string.Format(ErrorResources.AbsContainerSource_ObjectExists, objectName),
+                        Severity.Error, VerboseLevel.User);
+                throw;
             }
         }
 
@@ -161,11 +181,11 @@ namespace StorageManagementKit.Core.Copying.Sources
 
                 if (files[i].Kind == ObjectKind.File)
                 {
-                    string gcsObject = Helpers.RemoveSecExt(files[i].FullName);
+                    string blobObject = Helpers.RemoveSecExt(files[i].FullName);
 
-                    if (!ObjectExists(gcsObject))
+                    if (!ObjectExists(blobObject))
                     {
-                        if (Destination.Delete(gcsObject, _wideDisplay))
+                        if (Destination.Delete(blobObject, _wideDisplay))
                             Interlocked.Increment(ref _deletedCount);
                         else
                             Interlocked.Increment(ref _errorCount);
@@ -187,25 +207,30 @@ namespace StorageManagementKit.Core.Copying.Sources
         }
 
         /// <summary>
-        /// Diagnostics each object returned by GCS
+        /// Diagnostics each blob returned by Azure
         /// </summary>
         private bool ScanBucket()
         {
             Logger.WriteLog(ErrorCodes.SyncPhase_SendingBegun2,
                 ErrorResources.SyncPhase_SendingBegun, Severity.Information, VerboseLevel.User, true);
 
-            Logger.WriteLog(ErrorCodes.GcsBucketSource_GettingObjectList,
-                    ErrorResources.GcsBucketSource_GettingObjectList, Severity.Information, VerboseLevel.User);
+            Logger.WriteLog(ErrorCodes.AbsContainerSource_GettingObjectList,
+                    ErrorResources.AbsContainerSource_GettingObjectList, Severity.Information, VerboseLevel.User);
 
-            var list = _client.ListObjects(_containerName).ToList();
+            BlobContinuationToken blobContinuationToken = null;
 
-            for (int i = 0; i < list.Count; i++)
+            do
             {
-                ScanProgress(i, list.Count, list[i].Name);
+                var task = _blobContainer.ListBlobsSegmentedAsync(null, true, BlobListingDetails.Metadata, null, null, null, null);
+                task.Wait();
 
-                if (!ProcessObject(list[i]))
-                    break;
-            }
+                blobContinuationToken = task.Result.ContinuationToken;
+
+                foreach (IListBlobItem blob in task.Result.Results)
+                    if (blob is CloudBlockBlob)
+                        ProcessObject((CloudBlockBlob)blob);
+
+            } while (blobContinuationToken != null);
 
             Logger.WriteLog(ErrorCodes.SyncPhase_SendingEnded2,
                 ErrorResources.SyncPhase_SendingEnded, Severity.Information, VerboseLevel.User, true);
@@ -216,33 +241,34 @@ namespace StorageManagementKit.Core.Copying.Sources
         /// <summary>
         /// The <see cref="DirectoryDiscover" /> has found a file
         /// </summary>
-        private bool ProcessObject(Google.Apis.Storage.v1.Data.Object obj)
+        private bool ProcessObject(CloudBlockBlob blob)
         {
-            string originalName = Helpers.RemoveSecExt(obj.Name);
+            string originalName = Helpers.RemoveSecExt(blob.Name);
 
             string displayName = Helpers.FormatDisplayFileName(_wideDisplay, $"\\{originalName}");
 
-            Logger.WriteLog(ErrorCodes.LocalDirectorySource_FileProcessing,
+            Logger.WriteLog(ErrorCodes.AbsContainerSource_FileProcessing,
                 $">> Processing {displayName}", Severity.Information, VerboseLevel.Debug);
 
             string originalMD5, metadataMD5, metadataEncrypted;
 
-            if (!obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
-                !obj.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
-                !obj.Metadata.TryGetValue(Constants.MetadataEncryptedKey, out metadataEncrypted))
+            if (!blob.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
+                !blob.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
+                // Removes the "." because Azure does not accept this char
+                !blob.Metadata.TryGetValue(Constants.MetadataEncryptedKey.Replace(".", ""), out metadataEncrypted))
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketSource_MissingMetadata,
-                    string.Format(ErrorResources.GcsBucketSource_MissingMetadata, obj.Name),
+                Logger.WriteLog(ErrorCodes.AbsContainerSource_MissingMetadata,
+                    string.Format(ErrorResources.AbsContainerSource_MissingMetadata, blob.Name),
                     Severity.Error, VerboseLevel.User);
                 return false;
             }
 
             Interlocked.Increment(ref _fileScanned);
-            Interlocked.Add(ref _readSize, (long)obj.Size);
+            Interlocked.Add(ref _readSize, blob.Properties.Length);
 
             if (Destination.IsMetadataMatch($"\\{originalName}", Transform.IsSecured, originalMD5))
             {
-                Logger.WriteLog(ErrorCodes.GcsBucketSource_IgnoredFile,
+                Logger.WriteLog(ErrorCodes.AbsContainerSource_IgnoredFile,
                     $">> Ignored {Helpers.FormatDisplayFileName(_wideDisplay, $"\\{originalName}")}", Severity.Information, VerboseLevel.Debug);
 
                 Interlocked.Increment(ref _ignoredCount);
@@ -262,24 +288,24 @@ namespace StorageManagementKit.Core.Copying.Sources
             {
                 using (MemoryStream memStm = new MemoryStream())
                 {
-                    _client.DownloadObject(obj, memStm);
+                    blob.DownloadToStreamAsync(memStm).Wait();
                     memStm.Position = 0;
                     fo.DataContent = memStm.ToArray();
                 }
             }
             catch (Exception ex)
             {
-                throw new SmkException(string.Format(ErrorResources.GcsBucketSource_DownloadingError, obj.Name), ex);
+                throw new SmkException(string.Format(ErrorResources.AbsContainerSource_DownloadingError, blob.Name), ex);
             }
 
-            return Backup(obj, fo);
+            return Backup(blob, fo);
         }
 
-        private bool Backup(Google.Apis.Storage.v1.Data.Object obj, FileObject fo)
+        private bool Backup(CloudBlockBlob blob, FileObject fo)
         {
-            string displayName = Helpers.FormatDisplayFileName(_wideDisplay, Helpers.RemoveSecExt(obj.Name));
+            string displayName = Helpers.FormatDisplayFileName(_wideDisplay, Helpers.RemoveSecExt(blob.Name));
 
-            Logger.WriteLog(ErrorCodes.GcsBucketSource_SyncFile,
+            Logger.WriteLog(ErrorCodes.AbsContainerSource_SyncFile,
                 $"cpy src {displayName} [{Helpers.FormatByteSize(fo.DataContent.Length)}]", Severity.Information, VerboseLevel.User);
 
             // Transforms the file if a transformation is provided

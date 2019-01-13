@@ -120,6 +120,9 @@
   <data name="AbsContainerDestination_DeleteException" xml:space="preserve">
     <value>Error occured while deleting the blob '{0}'</value>
   </data>
+  <data name="AbsContainerDestination_DeleteFailed" xml:space="preserve">
+    <value>Failed to delete the blob '{0}'</value>
+  </data>
   <data name="AbsContainerDestination_GettingListException" xml:space="preserve">
     <value>Error while getting object list from Azure Blobs</value>
   </data>
@@ -131,6 +134,24 @@
   </data>
   <data name="AbsContainerDestination_UnsecuredNotSupported" xml:space="preserve">
     <value>Only a secured transformation is supported</value>
+  </data>
+  <data name="AbsContainerSource_DeleteException" xml:space="preserve">
+    <value>Error occured while deleting the blob object '{0}'</value>
+  </data>
+  <data name="AbsContainerSource_DeleteFailed" xml:space="preserve">
+    <value>Failed to delete the blob '{0}'</value>
+  </data>
+  <data name="AbsContainerSource_DownloadingError" xml:space="preserve">
+    <value>Downloading blob '{0}' failed</value>
+  </data>
+  <data name="AbsContainerSource_GettingObjectList" xml:space="preserve">
+    <value>Getting object list from Azure...</value>
+  </data>
+  <data name="AbsContainerSource_MissingMetadata" xml:space="preserve">
+    <value>Missing metadata for '{0}'</value>
+  </data>
+  <data name="AbsContainerSource_ObjectExists" xml:space="preserve">
+    <value>Error occured while verifying if the blob object '{0}' exists</value>
   </data>
   <data name="DirectoryDiscover_GettingFileList" xml:space="preserve">
     <value>Getting file list..</value>
