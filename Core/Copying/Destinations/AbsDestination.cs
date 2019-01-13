@@ -56,8 +56,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
         {
             if (!fo.IsSecured)
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_UnsecuredNotSupported,
-                    ErrorResources.AzureBlobsDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsDestination_UnsecuredNotSupported,
+                    ErrorResources.AbsDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
                 return false;
             }
 
@@ -87,7 +87,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch (Exception ex)
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
                 return false;
             }
         }
@@ -99,8 +99,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
         {
             try
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_GettingObjectList,
-                    ErrorResources.AzureBlobsDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsDestination_GettingObjectList,
+                    ErrorResources.AbsDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
 
                 List<DiscoveredObject> list = new List<DiscoveredObject>();
                 BlobContinuationToken blobContinuationToken = null;
@@ -130,8 +130,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_GettingListException,
-                    ErrorResources.AzureBlobsDestination_GettingListException, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsDestination_GettingListException,
+                    ErrorResources.AbsDestination_GettingListException, Severity.Error, VerboseLevel.User);
 
                 throw;
             }
@@ -152,15 +152,15 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
                 string displayName = Helpers.FormatDisplayFileName(wideDisplay, file);
 
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_FileDeleted,
+                Logger.WriteLog(ErrorCodes.AbsDestination_FileDeleted,
                     $"del dst {displayName}", Severity.Information, VerboseLevel.User);
 
                 return true;
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_DeleteException,
-                    string.Format(ErrorResources.AzureBlobsDestination_DeleteException, file),
+                Logger.WriteLog(ErrorCodes.AbsDestination_DeleteException,
+                    string.Format(ErrorResources.AbsDestination_DeleteException, file),
                     Severity.Error, VerboseLevel.User);
 
                 throw;
@@ -202,8 +202,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AzureBlobsDestination_IsMetadataMatchException,
-                    string.Format(ErrorResources.AzureBlobsDestination_IsMetadataMatchException, fullpath),
+                Logger.WriteLog(ErrorCodes.AbsDestination_IsMetadataMatchException,
+                    string.Format(ErrorResources.AbsDestination_IsMetadataMatchException, fullpath),
                     Severity.Error, VerboseLevel.User);
 
                 throw;

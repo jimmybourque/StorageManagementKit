@@ -67,12 +67,12 @@
         public const int S3ObjectRestore_GetVersionsException = 270;
         public const int S3ObjectRestore_RestoreObjectException = 271;
         public const int S3ObjectRestore_MissingMetadata = 272;
-        public const int AzureBlobsDestination_IsMetadataMatchException = 273;
-        public const int AzureBlobsDestination_GettingListException = 274;
-        public const int AzureBlobsDestination_CommitException = 275;
-        public const int AzureBlobsDestination_UnsecuredNotSupported = 276;
-        public const int AzureBlobsDestination_GettingObjectList = 277;
-        public const int AzureBlobsDestination_FileDeleted = 278;
-        public const int AzureBlobsDestination_DeleteException = 279;
+        public const int AbsDestination_IsMetadataMatchException = 273;
+        public const int AbsDestination_GettingListException = 274;
+        public const int AbsDestination_CommitException = 275;
+        public const int AbsDestination_UnsecuredNotSupported = 276;
+        public const int AbsDestination_GettingObjectList = 277;
+        public const int AbsDestination_FileDeleted = 278;
+        public const int AbsDestination_DeleteException = 279;
     }
 }

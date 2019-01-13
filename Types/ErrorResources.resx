@@ -117,19 +117,19 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AzureBlobsDestination_DeleteException" xml:space="preserve">
+  <data name="AbsDestination_DeleteException" xml:space="preserve">
     <value>Error occured while deleting the blob '{0}'</value>
   </data>
-  <data name="AzureBlobsDestination_GettingListException" xml:space="preserve">
+  <data name="AbsDestination_GettingListException" xml:space="preserve">
     <value>Error while getting object list from Azure Blobs</value>
   </data>
-  <data name="AzureBlobsDestination_GettingObjectList" xml:space="preserve">
+  <data name="AbsDestination_GettingObjectList" xml:space="preserve">
     <value>Getting object list from Azure...</value>
   </data>
-  <data name="AzureBlobsDestination_IsMetadataMatchException" xml:space="preserve">
+  <data name="AbsDestination_IsMetadataMatchException" xml:space="preserve">
     <value>Error occured while getting the metadata of '{0}'</value>
   </data>
-  <data name="AzureBlobsDestination_UnsecuredNotSupported" xml:space="preserve">
+  <data name="AbsDestination_UnsecuredNotSupported" xml:space="preserve">
     <value>Only a secured transformation is supported</value>
   </data>
   <data name="DirectoryDiscover_GettingFileList" xml:space="preserve">
