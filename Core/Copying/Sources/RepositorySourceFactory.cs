@@ -67,7 +67,7 @@ namespace StorageManagementKit.Core.Copying.Sources
                         Helpers.MandatoryValue("source path", srcSettings.Path);
                         Helpers.MandatoryValue("source api key filename", srcSettings.ApiKey);
 
-                        source = new AbsSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
+                        source = new AbsContainerSource(srcSettings.Path, srcSettings.ApiKey, _progress, srcSettings.WideDisplay);
                         break;
                     }
 

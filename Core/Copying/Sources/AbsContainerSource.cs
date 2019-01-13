@@ -12,7 +12,7 @@ using System.Threading;
 
 namespace StorageManagementKit.Core.Copying.Sources
 {
-    public class AbsSource : IRepositorySource
+    public class AbsContainerSource : IRepositorySource
     {
         #region Members
         public ILogging Logger { get; set; }
@@ -40,7 +40,7 @@ namespace StorageManagementKit.Core.Copying.Sources
         /// <summary>
         /// Constructor
         /// </summary>
-        public AbsSource(string containerName, string keyFile, IProgressing progress, bool wideDisplay)
+        public AbsContainerSource(string containerName, string keyFile, IProgressing progress, bool wideDisplay)
         {
             if (string.IsNullOrWhiteSpace(containerName))
                 throw new ArgumentNullException("containerName");

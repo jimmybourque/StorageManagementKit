@@ -64,7 +64,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
                         Helpers.MandatoryValue("destination", settings.Path);
                         Helpers.MandatoryValue("destination api key filename", settings.ApiKey);
 
-                        AbsDestination dest = new AbsDestination(settings.Path, settings.ApiKey);
+                        AbsContainerDestination dest = new AbsContainerDestination(settings.Path, settings.ApiKey);
                         dest.Logger = _logger;
                         return dest;
                     }

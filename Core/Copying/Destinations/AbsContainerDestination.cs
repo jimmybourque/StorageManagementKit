@@ -10,7 +10,7 @@ using System.Linq;
 
 namespace StorageManagementKit.Core.Copying.Destinations
 {
-    public class AbsDestination : IRepositoryDestination
+    public class AbsContainerDestination : IRepositoryDestination
     {
         #region Members
         private string _containerName;
@@ -30,7 +30,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
         /// <summary>
         /// Constructor
         /// </summary>
-        public AbsDestination(string containerName, string keyFile)
+        public AbsContainerDestination(string containerName, string keyFile)
         {
             if (string.IsNullOrWhiteSpace(containerName))
                 throw new ArgumentNullException("containerName");
@@ -56,8 +56,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
         {
             if (!fo.IsSecured)
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_UnsecuredNotSupported,
-                    ErrorResources.AbsDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_UnsecuredNotSupported,
+                    ErrorResources.AbsContainerDestination_UnsecuredNotSupported, Severity.Error, VerboseLevel.User);
                 return false;
             }
 
@@ -87,7 +87,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch (Exception ex)
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_CommitException, ex.Message, Severity.Error, VerboseLevel.User);
                 return false;
             }
         }
@@ -99,8 +99,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
         {
             try
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_GettingObjectList,
-                    ErrorResources.AbsDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_GettingObjectList,
+                    ErrorResources.AbsContainerDestination_GettingObjectList, Severity.Information, VerboseLevel.User);
 
                 List<DiscoveredObject> list = new List<DiscoveredObject>();
                 BlobContinuationToken blobContinuationToken = null;
@@ -130,8 +130,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_GettingListException,
-                    ErrorResources.AbsDestination_GettingListException, Severity.Error, VerboseLevel.User);
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_GettingListException,
+                    ErrorResources.AbsContainerDestination_GettingListException, Severity.Error, VerboseLevel.User);
 
                 throw;
             }
@@ -152,15 +152,15 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
                 string displayName = Helpers.FormatDisplayFileName(wideDisplay, file);
 
-                Logger.WriteLog(ErrorCodes.AbsDestination_FileDeleted,
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_FileDeleted,
                     $"del dst {displayName}", Severity.Information, VerboseLevel.User);
 
                 return true;
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_DeleteException,
-                    string.Format(ErrorResources.AbsDestination_DeleteException, file),
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_DeleteException,
+                    string.Format(ErrorResources.AbsContainerDestination_DeleteException, file),
                     Severity.Error, VerboseLevel.User);
 
                 throw;
@@ -202,8 +202,8 @@ namespace StorageManagementKit.Core.Copying.Destinations
             }
             catch
             {
-                Logger.WriteLog(ErrorCodes.AbsDestination_IsMetadataMatchException,
-                    string.Format(ErrorResources.AbsDestination_IsMetadataMatchException, fullpath),
+                Logger.WriteLog(ErrorCodes.AbsContainerDestination_IsMetadataMatchException,
+                    string.Format(ErrorResources.AbsContainerDestination_IsMetadataMatchException, fullpath),
                     Severity.Error, VerboseLevel.User);
 
                 throw;
