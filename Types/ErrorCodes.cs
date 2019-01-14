@@ -84,5 +84,8 @@
         public const int AbsContainerSource_MissingMetadata = 287;
         public const int AbsContainerSource_IgnoredFile = 288;
         public const int AbsContainerSource_SyncFile = 289;
+        public const int AbsBlobRestore_ObjectNotFound = 290;
+        public const int AbsObjectRestore_GetVersionsException = 291;
+        public const int AbsBlobRestore_RestoreObjectException = 292;
     }
 }

@@ -11,5 +11,6 @@ namespace StorageManagementKit.Core.Restoring
         public string StorageClass { get; set; }
         public long Size { get; set; }
         public object VersionId { get; set; }
+        public object ObjectData { get; set; }
     }
 }

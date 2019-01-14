@@ -51,6 +51,14 @@ namespace StorageManagementKit.Core.Restoring
                         return new S3ObjectRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
                     }
 
+                case RestoringRepositorySource.ABS:
+                    {
+                        Helpers.MandatoryValue("source path", settings.Path);
+                        Helpers.MandatoryValue("source API key", settings.ApiKey);
+
+                        return new AbsBlobRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
+                    }
+
                 default:
                     throw new SmkException($"Unsupported repository source '{settings.Repository}");
             }

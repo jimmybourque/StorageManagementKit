@@ -61,6 +61,24 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Blob &apos;{0}&apos; not found.
+        /// </summary>
+        public static string AbsBlobRestore_ObjectNotFound {
+            get {
+                return ResourceManager.GetString("AbsBlobRestore_ObjectNotFound", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed while downloading blob from Azure.
+        /// </summary>
+        public static string AbsBlobRestore_RestoreObjectException {
+            get {
+                return ResourceManager.GetString("AbsBlobRestore_RestoreObjectException", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Error occured while deleting the blob &apos;{0}&apos;.
         /// </summary>
         public static string AbsContainerDestination_DeleteException {
@@ -165,6 +183,15 @@ namespace StorageManagementKit.Types {
         public static string AbsContainerSource_ObjectExists {
             get {
                 return ResourceManager.GetString("AbsContainerSource_ObjectExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed while getting blob versions from Azure.
+        /// </summary>
+        public static string AbsObjectRestore_GetVersionsException {
+            get {
+                return ResourceManager.GetString("AbsObjectRestore_GetVersionsException", resourceCulture);
             }
         }
         
