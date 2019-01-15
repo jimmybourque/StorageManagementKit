@@ -196,6 +196,15 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Missing metadata for &apos;{0}&apos;.
+        /// </summary>
+        public static string AbsObjectRestore_MissingMetadata {
+            get {
+                return ResourceManager.GetString("AbsObjectRestore_MissingMetadata", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Getting file list...
         /// </summary>
         public static string DirectoryDiscover_GettingFileList {

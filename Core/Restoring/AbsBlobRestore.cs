@@ -1,5 +1,7 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using StorageManagementKit.Core.Copying;
+using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Diagnostics.Logging;
 using StorageManagementKit.Types;
 using System;
@@ -12,7 +14,6 @@ namespace StorageManagementKit.Core.Restoring
     {
         #region Members
         private long _fileSize;
-        private const string _restorationBlobName = "_restorationBlobTmp";
         private string _containerName;
         private string _apiKey;
         private byte[] _crypto_key;
@@ -82,7 +83,7 @@ namespace StorageManagementKit.Core.Restoring
                      {
                          Name = blob.Name,
                          TimeCreated = blob.Properties.LastModified.Value.DateTime.ToLocalTime(),
-                         StorageClass = "           ",
+                         StorageClass = "           ", // Keep this to ensure a good display
                          Size = blob.Properties.Length,
                          VersionId = blob.SnapshotTime.HasValue ? blob.SnapshotTime.Value.DateTime.ToLocalTime() : (DateTime?)null,
                          ObjectData = blob
@@ -108,77 +109,49 @@ namespace StorageManagementKit.Core.Restoring
             {
                 CloudBlockBlob blob = (CloudBlockBlob)version.ObjectData;
 
-                // TODO ignore _restorationBlobName on Getobjectlist
-                // set the downloading progress stat
-                var tmp = _blobContainer.GetBlobReference(_restorationBlobName);
-                tmp.StartCopyAsync(blob.StorageUri.PrimaryUri).Wait();
+                // Extracts the metadata
+                string originalMD5, metadataMD5, metadataEncrypted;
 
-                try
+                if (!blob.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
+                    !blob.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
+                    !blob.Metadata.TryGetValue(Constants.MetadataEncryptedKey.Replace(".", ""), out metadataEncrypted))
                 {
-                    using (MemoryStream memStm = new MemoryStream())
-                    {
-                        tmp.DownloadToStreamAsync(memStm).Wait();
-                        memStm.Position = 0;
-                        //   fo.DataContent = memStm.ToArray();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new SmkException(string.Format(ErrorResources.AbsContainerSource_DownloadingError, blob.Name), ex);
+                    _logger.WriteLog(ErrorCodes.AbsObjectRestore_MissingMetadata,
+                        string.Format(ErrorResources.AbsObjectRestore_MissingMetadata, blob.Name),
+                        Severity.Error, VerboseLevel.User);
+                    return false;
                 }
 
-                // Delete the artifact
-                tmp.DeleteAsync();
-                
+                FileObject fo = new FileObject()
+                {
+                    Metadata = new FileMetadata() { OriginalMD5 = originalMD5 },
+                    DataContent = null,
+                    IsSecured = true,
+                    MetadataMD5 = metadataMD5,
+                    MetadataContent = metadataEncrypted
+                };
+
+                DownloadObject(blob, fo);
+
+                Helpers.WriteProgress("Decrypting...");
+                fo = new UnsecureTransform(_crypto_key, _crypto_iv, _logger).Process(fo);
+
+                Helpers.WriteProgress("Saving...");
+                Helpers.WriteProgress("");
+
+                // Force a destination name if not given by the user
+                if (string.IsNullOrEmpty(destination))
+                {
+                    string destName = version.Name.Replace(Constants.EncryptedExt, "");
+                    destination = Path.GetFileNameWithoutExtension(destName);
+                    destination = $"{destination}.{version.VersionId}.restore{Path.GetExtension(destName)}";
+                }
+
+                File.WriteAllBytes(destination, fo.DataContent);
+                File.SetAttributes(destination, fo.Metadata.Attributes);
+                File.SetLastWriteTime(destination, fo.Metadata.LastWriteTime);
+
                 return true;
-
-                //using (StorageClient _client = StorageClient.Create(GoogleCredential.FromFile(_apiKey)))
-                //{
-                //    var gen = new GetObjectOptions() { Generation = (long?)version.VersionId };
-                //    var obj = _client.GetObject(_containerName, version.Name, gen);
-                //    string originalMD5, metadataMD5, metadataEncrypted;
-
-                //    if (!obj.Metadata.TryGetValue(Constants.OriginalMD5Key, out originalMD5) ||
-                //        !obj.Metadata.TryGetValue(Constants.MetadataMD5Key, out metadataMD5) ||
-                //        !obj.Metadata.TryGetValue(Constants.MetadataEncryptedKey, out metadataEncrypted))
-                //    {
-                //        _logger.WriteLog(ErrorCodes.GcsObjectRestore_MissingMetadata,
-                //            string.Format(ErrorResources.GcsObjectRestore_MissingMetadata, obj.Name),
-                //            Severity.Error, VerboseLevel.User);
-                //        return false;
-                //    }
-
-                //    FileObject fo = new FileObject()
-                //    {
-                //        Metadata = new FileMetadata() { OriginalMD5 = originalMD5 },
-                //        DataContent = null,
-                //        IsSecured = true,
-                //        MetadataMD5 = metadataMD5,
-                //        MetadataContent = metadataEncrypted
-                //    };
-
-                //    DownloadObject(_client, obj, fo, version);
-
-                //    Helpers.WriteProgress("Decrypting...");
-                //    fo = new UnsecureTransform(_crypto_key, _crypto_iv, _logger).Process(fo);
-
-                //    Helpers.WriteProgress("Saving...");
-                //    Helpers.WriteProgress("");
-
-                //    // Force a destination name if not given by the user
-                //    if (string.IsNullOrEmpty(destination))
-                //    {
-                //        string destName = version.Name.Replace(Constants.EncryptedExt, "");
-                //        destination = Path.GetFileNameWithoutExtension(destName);
-                //        destination = $"{destination}.{version.VersionId}.restore{Path.GetExtension(destName)}";
-                //    }
-
-                //    File.WriteAllBytes(destination, fo.DataContent);
-                //    File.SetAttributes(destination, fo.Metadata.Attributes);
-                //    File.SetLastWriteTime(destination, fo.Metadata.LastWriteTime);
-
-                //    return true;
-                //}
             }
             catch (Exception ex)
             {
@@ -186,6 +159,32 @@ namespace StorageManagementKit.Core.Restoring
                     ErrorResources.AbsBlobRestore_RestoreObjectException + Environment.NewLine + ex.Message,
                     Severity.Error, VerboseLevel.User);
                 return false;
+            }
+        }
+
+        /// <summary>
+        /// Download the file object from Azure
+        /// </summary>
+        private void DownloadObject(CloudBlockBlob blob, FileObject fo)
+        {
+            try
+            {
+                var c = _blobContainer.GetBlobReference(blob.Name, blob.SnapshotTime);
+                var d = c.ServiceClient.GetBlobReferenceFromServerAsync(c.SnapshotQualifiedUri, null, null, null).Result;
+
+                d.DownloadToFileAsync("C:\\Temp\\toto.dat", FileMode.Create);
+                // Downloads the file from the blob storage
+                using (MemoryStream memStm = new MemoryStream())
+                {
+                    // TODO IProgress
+                    blob.DownloadToStreamAsync(memStm).Wait();
+                    memStm.Position = 0;
+                    fo.DataContent = memStm.ToArray();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new SmkException(string.Format(ErrorResources.AbsContainerSource_DownloadingError, blob.Name), ex);
             }
         }
         #endregion

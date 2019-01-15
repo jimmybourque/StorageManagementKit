@@ -87,5 +87,6 @@
         public const int AbsBlobRestore_ObjectNotFound = 290;
         public const int AbsObjectRestore_GetVersionsException = 291;
         public const int AbsBlobRestore_RestoreObjectException = 292;
+        public const int AbsObjectRestore_MissingMetadata = 293;
     }
 }

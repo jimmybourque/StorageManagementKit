@@ -162,6 +162,9 @@
   <data name="AbsObjectRestore_GetVersionsException" xml:space="preserve">
     <value>Failed while getting blob versions from Azure</value>
   </data>
+  <data name="AbsObjectRestore_MissingMetadata" xml:space="preserve">
+    <value>Missing metadata for '{0}'</value>
+  </data>
   <data name="DirectoryDiscover_GettingFileList" xml:space="preserve">
     <value>Getting file list..</value>
   </data>

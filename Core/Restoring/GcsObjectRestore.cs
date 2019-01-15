@@ -166,7 +166,7 @@ namespace StorageManagementKit.Core.Restoring
         }
 
         /// <summary>
-        /// Download a file object from GCS
+        /// Download the file object from GCS
         /// </summary>
         private void DownloadObject(StorageClient client, Google.Apis.Storage.v1.Data.Object gcsObject,
             FileObject fileObject, ObjectVersion version)
