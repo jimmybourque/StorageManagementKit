@@ -331,7 +331,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed while getting object versions from GCP.
+        ///   Looks up a localized string similar to Failed to get the object versions from GCP.
         /// </summary>
         public static string GcsObjectRestore_GetVersionsException {
             get {
@@ -358,7 +358,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed while downloading object from GCP.
+        ///   Looks up a localized string similar to Failed to download the object from GCP.
         /// </summary>
         public static string GcsObjectRestore_RestoreObjectException {
             get {
@@ -412,7 +412,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Error while getting object list from S3 Bucket.
+        ///   Looks up a localized string similar to Error to get the object list from S3 Bucket.
         /// </summary>
         public static string S3BucketDestination_GettingListException {
             get {
@@ -475,7 +475,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed while getting object versions from S3.
+        ///   Looks up a localized string similar to Failed to get the versions from S3.
         /// </summary>
         public static string S3ObjectRestore_GetVersionsException {
             get {
@@ -502,7 +502,7 @@ namespace StorageManagementKit.Types {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Failed while downloading object from S3.
+        ///   Looks up a localized string similar to Failed to download the object from S3.
         /// </summary>
         public static string S3ObjectRestore_RestoreObjectException {
             get {

@@ -208,7 +208,7 @@
     <value>Missing metadata for '{0}'</value>
   </data>
   <data name="GcsObjectRestore_GetVersionsException" xml:space="preserve">
-    <value>Failed while getting object versions from GCP</value>
+    <value>Failed to get the object versions from GCP</value>
   </data>
   <data name="GcsObjectRestore_MissingMetadata" xml:space="preserve">
     <value>Missing metadata for '{0}'</value>
@@ -217,7 +217,7 @@
     <value>Object '{0}' not found</value>
   </data>
   <data name="GcsObjectRestore_RestoreObjectException" xml:space="preserve">
-    <value>Failed while downloading object from GCP</value>
+    <value>Failed to download the object from GCP</value>
   </data>
   <data name="LocalDirectoryCleaner_FailedToDeleteFile" xml:space="preserve">
     <value>Failed to delete the file '{0}'</value>
@@ -235,7 +235,7 @@
     <value>Failed to delete the artifact {0}</value>
   </data>
   <data name="S3BucketDestination_GettingListException" xml:space="preserve">
-    <value>Error while getting object list from S3 Bucket</value>
+    <value>Error to get the object list from S3 Bucket</value>
   </data>
   <data name="S3BucketDestination_GettingObjectList" xml:space="preserve">
     <value>Getting object list from Amazon...</value>
@@ -256,7 +256,7 @@
     <value>Missing metadata for '{0}'</value>
   </data>
   <data name="S3ObjectRestore_GetVersionsException" xml:space="preserve">
-    <value>Failed while getting object versions from S3</value>
+    <value>Failed to get the versions from S3</value>
   </data>
   <data name="S3ObjectRestore_MissingMetadata" xml:space="preserve">
     <value>Missing metadata for '{0}'</value>
@@ -265,7 +265,7 @@
     <value>Object '{0}' not found</value>
   </data>
   <data name="S3ObjectRestore_RestoreObjectException" xml:space="preserve">
-    <value>Failed while downloading object from S3</value>
+    <value>Failed to download the object from S3</value>
   </data>
   <data name="SecureTransform_ProcessException" xml:space="preserve">
     <value>Error occured while securing the file {0}</value>

@@ -5,6 +5,7 @@ using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Diagnostics.Logging;
 using StorageManagementKit.Types;
 using System;
+using System.Collections;
 using System.IO;
 using System.Linq;
 
@@ -169,10 +170,12 @@ namespace StorageManagementKit.Core.Restoring
         {
             try
             {
-                var c = _blobContainer.GetBlobReference(blob.Name, blob.SnapshotTime);
-                var d = c.ServiceClient.GetBlobReferenceFromServerAsync(c.SnapshotQualifiedUri, null, null, null).Result;
+                // BUG HERE 
+                // https://stackoverflow.com/questions/37987760/how-to-download-the-azure-blob-snapshots-using-c-sharp-in-windows-form-applicati
+                /*
+                 * Sir i have made some changes in the code and while running i am able to get the snapshot url ,even i able to download it.but the file is curupted.and code fires some exception.error code blob not found –
+                 * */
 
-                d.DownloadToFileAsync("C:\\Temp\\toto.dat", FileMode.Create);
                 // Downloads the file from the blob storage
                 using (MemoryStream memStm = new MemoryStream())
                 {
