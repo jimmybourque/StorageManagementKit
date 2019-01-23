@@ -1,5 +1,6 @@
 ﻿using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
+using Microsoft.WindowsAzure.Storage.Core.Util;
 using StorageManagementKit.Core.Copying;
 using StorageManagementKit.Core.Transforms;
 using StorageManagementKit.Diagnostics.Logging;
@@ -8,10 +9,11 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Linq;
+using System.Threading;
 
 namespace StorageManagementKit.Core.Restoring
 {
-    public class AbsBlobRestore : IObjectRestoring
+    public class AbsBlobRestore : IObjectRestoring, IProgress<StorageProgress>
     {
         #region Members
         private long _fileSize;
@@ -26,7 +28,7 @@ namespace StorageManagementKit.Core.Restoring
         #endregion
 
         #region Properties
-        public string BucketName { get { return $"gs://{_containerName}"; } }
+        public string BucketName { get { return $"az://{_containerName}"; } }
         #endregion
 
         #region Constructor
@@ -84,9 +86,9 @@ namespace StorageManagementKit.Core.Restoring
                      {
                          Name = blob.Name,
                          TimeCreated = blob.Properties.LastModified.Value.DateTime.ToLocalTime(),
-                         StorageClass = "           ", // Keep this to ensure a good display
+                         StorageClass = GetStorageClass(blob),
                          Size = blob.Properties.Length,
-                         VersionId = blob.SnapshotTime.HasValue ? blob.SnapshotTime.Value.DateTime.ToLocalTime() : (DateTime?)null,
+                         VersionId = GetVersion(blob),
                          ObjectData = blob
                      })
                     .OrderByDescending(a => a.TimeCreated)
@@ -99,6 +101,32 @@ namespace StorageManagementKit.Core.Restoring
                     Severity.Error, VerboseLevel.User);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Returns the storage class of a blob
+        /// </summary>
+        private string GetStorageClass(CloudBlockBlob blob)
+        {
+            if (blob.Properties.PremiumPageBlobTier != null)
+                return "Premium";
+            else if (blob.Properties.StandardBlobTier != null)
+                return "Standard";
+            else
+                return "Unknown";
+        }
+
+        /// <summary>
+        /// Returns the blob state
+        /// </summary>
+        private static string GetVersion(CloudBlockBlob blob)
+        {
+            if (blob.IsDeleted)
+                return "Deleted";
+            else if (blob.IsSnapshot)
+                return "Snapshot";
+            else
+                return "Active";
         }
 
         /// <summary>
@@ -170,17 +198,13 @@ namespace StorageManagementKit.Core.Restoring
         {
             try
             {
-                // BUG HERE 
-                // https://stackoverflow.com/questions/37987760/how-to-download-the-azure-blob-snapshots-using-c-sharp-in-windows-form-applicati
-                /*
-                 * Sir i have made some changes in the code and while running i am able to get the snapshot url ,even i able to download it.but the file is curupted.and code fires some exception.error code blob not found –
-                 * */
+                _fileSize = blob.Properties.Length;
 
                 // Downloads the file from the blob storage
                 using (MemoryStream memStm = new MemoryStream())
                 {
-                    // TODO IProgress
-                    blob.DownloadToStreamAsync(memStm).Wait();
+                    CancellationToken cancellationToken;
+                    blob.DownloadToStreamAsync(memStm, null, null, null, this, cancellationToken).Wait();
                     memStm.Position = 0;
                     fo.DataContent = memStm.ToArray();
                 }
@@ -189,6 +213,15 @@ namespace StorageManagementKit.Core.Restoring
             {
                 throw new SmkException(string.Format(ErrorResources.AbsContainerSource_DownloadingError, blob.Name), ex);
             }
+        }
+
+        public void Report(StorageProgress value)
+        {
+            int percent = (int)(value.BytesTransferred * 100 / _fileSize);
+
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.CursorLeft = 0;
+            Helpers.WriteProgress(percent);
         }
         #endregion
     }

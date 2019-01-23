@@ -53,12 +53,10 @@ namespace StorageManagementKit.Core.Restoring
 
                 case RestoringRepositorySource.ABS:
                     {
-                        throw new SmkException("Unsupported feature for that time! It seems the is a bug with the Azure Blob when we try to retrieve a blob from a snapshop. Thanks if you have a solution.");
+                        Helpers.MandatoryValue("source path", settings.Path);
+                        Helpers.MandatoryValue("source API key", settings.ApiKey);
 
-//                        Helpers.MandatoryValue("source path", settings.Path);
-//                        Helpers.MandatoryValue("source API key", settings.ApiKey);
-
- //                       return new AbsBlobRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
+                        return new AbsBlobRestore(settings.Path, settings.ApiKey, crypto_key, crypto_iv, _logger);
                     }
 
                 default:

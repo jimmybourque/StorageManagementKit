@@ -153,7 +153,7 @@ namespace StorageManagementKit.Core.Copying.Destinations
 
                 var blob = _blobContainer.GetBlockBlobReference(file);
 
-                if (!blob.DeleteIfExistsAsync().Result)
+                if (!blob.DeleteIfExistsAsync(DeleteSnapshotsOption.IncludeSnapshots, null, null, null).Result)
                 {
                     Logger.WriteLog(ErrorCodes.AbsContainerDestination_DeleteFailed,
                             string.Format(ErrorResources.AbsContainerDestination_DeleteFailed, displayName),

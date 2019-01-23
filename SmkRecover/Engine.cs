@@ -245,7 +245,7 @@ namespace SmkRecover
             for (int i = 0; i < versions.Length; i++)
             {
                 string size = Helpers.FormatByteSize(versions[i].Size);
-                _logger.WriteLine($"[{i + 1}]\t{versions[i].TimeCreated}\t{size}\t{versions[i].StorageClass}\t{versions[i].VersionId}");
+                _logger.WriteLine($"[{i + 1}]\t{versions[i].TimeCreated}\t{size}\t{versions[i].StorageClass.PadRight(15, ' ')}\t{versions[i].VersionId}");
             }
 
             _logger.WriteLine();
