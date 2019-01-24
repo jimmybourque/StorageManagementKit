@@ -89,7 +89,8 @@ namespace StorageManagementKit.Core.Restoring
                          StorageClass = GetStorageClass(blob),
                          Size = blob.Properties.Length,
                          VersionId = GetVersion(blob),
-                         ObjectData = blob
+                         ObjectData = blob,
+                         Questions = GetQuestions(blob)
                      })
                     .OrderByDescending(a => a.TimeCreated)
                     .ToArray();
@@ -101,6 +102,18 @@ namespace StorageManagementKit.Core.Restoring
                     Severity.Error, VerboseLevel.User);
                 return null;
             }
+        }
+
+        /// <summary>
+        /// If the blob is deleted, the user must confirm that it accepts to undelete the file before 
+        /// to recover the file.
+        /// </summary>
+        private string[] GetQuestions(CloudBlockBlob blob)
+        {
+            if (blob.IsDeleted)
+                return new string[] { Resources.AbsBlobRestore_UndeletionConfirmation };
+            else
+                return null;
         }
 
         /// <summary>
@@ -137,6 +150,9 @@ namespace StorageManagementKit.Core.Restoring
             try
             {
                 CloudBlockBlob blob = (CloudBlockBlob)version.ObjectData;
+
+                if (blob.IsDeleted)
+                    blob.UndeleteAsync().Wait();
 
                 // Extracts the metadata
                 string originalMD5, metadataMD5, metadataEncrypted;

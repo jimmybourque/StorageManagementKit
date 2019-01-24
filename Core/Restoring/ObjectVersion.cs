@@ -12,5 +12,10 @@ namespace StorageManagementKit.Core.Restoring
         public long Size { get; set; }
         public object VersionId { get; set; }
         public object ObjectData { get; set; }
+
+        /// <summary>
+        /// The user must confirm these questions before to restore the file.
+        /// </summary>
+        public string[] Questions { get; set; }
     }
 }
