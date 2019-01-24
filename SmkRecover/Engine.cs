@@ -137,7 +137,7 @@ namespace SmkRecover
             // Requests a filename from the user if it was not provided...
             if (string.IsNullOrEmpty(sourceFile))
             {
-                Console.WriteLine("Type the file name to restore and press enter:");
+                Console.WriteLine(Resources.Engine_TypeFileName);
                 sourceFile = Console.ReadLine().Replace("\\", "/");
             }
             else
@@ -147,7 +147,7 @@ namespace SmkRecover
             // Gets the list of versions about the requested object
             Console.Clear();
             DisplayHeader(false);
-            _logger.WriteLine("Contacting the cloud storage service...");
+            _logger.WriteLine(Resources.Engine_ContactingService);
             _logger.WriteLine();
 
             RestoringSettings settings = new RestoringSettings()
@@ -173,17 +173,56 @@ namespace SmkRecover
             if (choice == -1)
                 return;
 
+            // If there is some questions to be confirmed by the user...
+            if (!UserConfirmations(versions[choice - 1]))
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine(Resources.Engine_ObjectNotRestored);
+                Console.ForegroundColor = ConsoleColor.Gray;
+                return;
+            }
+
             // The user has choosen the version, requests the file
             if (!restorer.Restore(versions[choice - 1], ref destFile))
                 return;
 
-            _logger.WriteLine();            
+            _logger.WriteLine();
             Console.ForegroundColor = ConsoleColor.Gray;
-            _logger.Write("Restored file: ");
+            _logger.Write($"{Resources.Engine_RestoredFile} ");
             Console.ForegroundColor = ConsoleColor.White;
             _logger.WriteLine(destFile);
 
             DisplayFooter();
+        }
+
+        /// <summary>
+        /// If there is some questions to be confirmed by the user...
+        /// </summary>
+        private static bool UserConfirmations(ObjectVersion version)
+        {
+            if (version.Questions != null)
+                foreach (string question in version.Questions)
+                {
+                    Console.ForegroundColor = ConsoleColor.Gray;
+
+                    Console.WriteLine();
+                    Console.Write(question);
+                    Console.ForegroundColor = ConsoleColor.White;
+                    Console.Write(" [y/N]: ");
+
+                    Console.CursorVisible = true;
+                    string response = Console.ReadLine();
+                    Console.CursorVisible = false;
+
+                    // If the user has answered No, stop now!
+                    if (response == null)
+                        return false;
+
+                    if (!response.ToLower().Equals("y"))
+                        return false;
+                }
+
+            return true;
         }
 
         /// <summary>
@@ -197,12 +236,14 @@ namespace SmkRecover
             do
             {
                 Console.ForegroundColor = ConsoleColor.Gray;
-                Console.Write("Enter the desired object version and press enter or type 'exit' to cancel ");
+                Console.Write($"{Resources.Engine_EnterVersion} ");
 
                 Console.ForegroundColor = ConsoleColor.White;
                 Console.Write($"[1-{count}]: ");
 
+                Console.CursorVisible = true;
                 choice = Console.ReadLine();
+                Console.CursorVisible = false;
 
                 // The user can type 'exist' to cancel the workflow
                 if (choice.ToLower().Equals("exit"))
