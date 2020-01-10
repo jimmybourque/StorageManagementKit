@@ -6,7 +6,7 @@ The kit integrates the cloud services of _Google Cloud Bucket Storage (GCS)_ and
 
 "_This is my personal backup solution that I use at home_" - Jimmy Bourque
 
-To compile the source code, you must install .Net Core 2.1
+To compile the source code, you must install .Net Core 2.1 or, download the [last release](https://github.com/jimmybourque/StorageManagementKit/releases)
 
 ## Integrations
 
