@@ -32,6 +32,7 @@ namespace StorageManagementKit.Core.Copying.Sources
         private bool _wideDisplay;
         private bool _ignoreCleaning;
         private CheckLevel _checkLevel;
+        private bool _noLocalDelete;
         #endregion
 
         #region Properties
@@ -58,7 +59,7 @@ namespace StorageManagementKit.Core.Copying.Sources
         /// <summary>
         /// Constructor
         /// </summary>
-        public LocalDirectorySource(string basePath, IProgressing progress, bool wideDisplay, CheckLevel checkLevel, bool ignoreCleaning)
+        public LocalDirectorySource(string basePath, IProgressing progress, bool wideDisplay, CheckLevel checkLevel, bool ignoreCleaning, bool noLocalDelete)
         {
             _path = basePath ?? throw new ArgumentNullException("basePath");
             _pathNoTail = _path.RemoveTail();
@@ -66,6 +67,7 @@ namespace StorageManagementKit.Core.Copying.Sources
             _wideDisplay = wideDisplay;
             _checkLevel = checkLevel;
             _ignoreCleaning = ignoreCleaning;
+            _noLocalDelete = noLocalDelete;
         }
         #endregion
 
@@ -281,7 +283,7 @@ namespace StorageManagementKit.Core.Copying.Sources
         }
 
         /// <summary>
-        /// Delete local (source) files that do not exist in the destination.
+        /// Delete hives (source) files and into the destination that no longer exist.
         /// </summary>
         private bool DeleteLocalGhostFiles()
         {
@@ -304,7 +306,7 @@ namespace StorageManagementKit.Core.Copying.Sources
                     else if ((Transform != null) && (!Transform.IsSecured))
                         localFile = $"{localFile}{Constants.EncryptedExt}";
 
-                    if (!File.Exists(localFile))
+                    if (!_noLocalDelete && !File.Exists(localFile))
                     {
                         if (Destination.Delete(files[i].FullName, _wideDisplay))
                             Interlocked.Increment(ref _deletedCount);

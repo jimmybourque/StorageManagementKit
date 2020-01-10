@@ -100,7 +100,8 @@ namespace SmkCopy
                 CheckLevel = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.Check).ConvertToCheckLevel(),
                 NoCleaning = ConsoleHelpers.CommandArgExists(_arguments, Arguments.NoCleaning),
                 WideDisplay = ConsoleHelpers.CommandArgExists(_arguments, Arguments.Wide),
-                ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey)
+                ApiKey = ConsoleHelpers.GetCommandArgValue(_arguments, Arguments.SourceApiKey),
+                NoLocalDelete = ConsoleHelpers.CommandArgExists(_arguments, Arguments.NoLocalDelete)
             };
 
             DestinationSettings dstSettings = new DestinationSettings()

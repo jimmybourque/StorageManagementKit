@@ -8,5 +8,6 @@
         public bool NoCleaning { get; set; }
         public string ApiKey { get; set; }
         public bool WideDisplay { get; set; }
+        public bool NoLocalDelete { get; set; }
     }
 }

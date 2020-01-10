@@ -40,7 +40,7 @@ namespace StorageManagementKit.Core.Copying.Sources
                         Helpers.MandatoryValue("source path", srcSettings.Path);
 
                         source = new LocalDirectorySource(srcSettings.Path, _progress, srcSettings.WideDisplay,
-                            srcSettings.CheckLevel, srcSettings.NoCleaning);
+                            srcSettings.CheckLevel, srcSettings.NoCleaning, srcSettings.NoLocalDelete);
                         break;
                     }
 
