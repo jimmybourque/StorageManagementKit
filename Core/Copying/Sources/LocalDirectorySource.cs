@@ -8,6 +8,7 @@ using StorageManagementKit.Types;
 using System;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 
 namespace StorageManagementKit.Core.Copying.Sources
@@ -15,6 +16,7 @@ namespace StorageManagementKit.Core.Copying.Sources
     public class LocalDirectorySource : IRepositorySource, IDirectoryDiscovering
     {
         #region Members
+        private static Regex _guidRegex = new Regex("^.*\\\\\\.[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$");
         public ILogging Logger { get; set; }
         private string _path;
         private string _pathNoTail;
@@ -166,6 +168,10 @@ namespace StorageManagementKit.Core.Copying.Sources
         bool IDirectoryDiscovering.OnFileFound(FileInfo fi)
         {
             if ((_checkLevel == CheckLevel.ArchiveFlag) && ((fi.Attributes & FileAttributes.Archive) == 0))
+                return true;
+
+            // Excludes Office 365 system files
+            if (_guidRegex.IsMatch(fi.FullName))
                 return true;
 
             try

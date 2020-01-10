@@ -111,7 +111,7 @@ namespace StorageManagementKit.IO.FileSystem
 
             DirectoryInfo di = new DirectoryInfo(path);
             List<DiscoveredObject> objectsFiles = new List<DiscoveredObject>();
-
+          
             objectsFiles.AddRange(di.GetFiles("*", SearchOption.TopDirectoryOnly).Select(f => f.ToDiscoveredObject()));
 
             GetFiles(exclusionPathes, logger, di, objectsFiles);
@@ -151,7 +151,7 @@ namespace StorageManagementKit.IO.FileSystem
         /// Returns true if the folder is excluded of the discovering
         /// </summary>
         private static bool IsExcluded(DirectoryInfo subDir, string[] exclusionPathes, ILogging logger)
-        {
+        {           
             if (subDir.FullName.EndsWith("$RECYCLE.BIN"))
                 return true;
 
